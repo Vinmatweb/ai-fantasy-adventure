@@ -11,10 +11,11 @@ This file is the durable handoff point for the chapter-by-chapter English editio
 - Bestiary animals: translated list and complete profiles for all 12 animal entries: `/en/explorer/bestiary/animals`.
 - Bestiary people and NPCs: translated list and complete profiles for all 16 entries, including approved boss stat blocks: `/en/explorer/bestiary/people`.
 - Bestiary fantasy humanoids: translated list and complete profiles for all 12 entries, including abilities, combat values, and recommended party sizes: `/en/explorer/bestiary/fantasy-humanoids`.
+- Bestiary undead: translated list and complete profiles for all 9 entries, including special abilities, resistances, and sunlight weakness: `/en/explorer/bestiary/undead`.
 
 ## Remaining translation work
 
-1. Bestiary: translate the remaining 22 profiles, their ability text, and boss guidance, one category at a time: 9 undead and 13 monsters.
+1. Bestiary: translate the remaining 13 monster profiles, their ability text, and boss guidance.
 2. Equipment: translate all 92 catalogue items and their fields.
 3. Magic: translate the 11 schools and all 110 spells, one school at a time.
 4. Rules and Vaelor pages.
