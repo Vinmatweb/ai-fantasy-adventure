@@ -67,5 +67,11 @@ test("renders representative public and encyclopedia routes", async () => {
       context,
     );
     assert.equal(response.status, 200, route);
+    if (route === "/en") {
+      const html = await response.text();
+      assert.match(html, /World overview/);
+      assert.match(html, /Game setup/);
+      assert.doesNotMatch(html, /href=["']\/explorer(?:\/|["'])/);
+    }
   }
 });

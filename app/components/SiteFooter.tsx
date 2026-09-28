@@ -16,7 +16,7 @@ export function SiteFooter({ locale = "cs" }: { locale?: "cs" | "en" }) {
         </div>
         <div className="site-footer__links">
           <Link href={english ? "/en#play" : "/start"}>{english ? "Start playing" : "Začít hrát"}</Link>
-          <Link href="/explorer">{english ? "Encyclopedia" : "Encyklopedie"}</Link>
+          <Link href={english ? "/en#heroes" : "/explorer"}>{english ? "World overview" : "Encyklopedie"}</Link>
           <a href="/downloads/AI_Fantasy_Adventure_v1_0_complete.zip" download>
             {english ? "Complete package" : "Kompletní balíček"}
           </a>

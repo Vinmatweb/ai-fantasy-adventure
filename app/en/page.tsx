@@ -35,7 +35,7 @@ export default function EnglishPage() {
             <p className="hero-lead">Speak, decide, and explore. AI becomes the Game Master, runs the world, and handles every rule — you are the heroes.</p>
             <div className="hero-actions">
               <a href="#play" className="button button--gold button--large">Start your adventure</a>
-              <Link href="/explorer" className="button button--glass button--large">Explore the world</Link>
+              <Link href="/en#heroes" className="button button--glass button--large">Explore the world</Link>
             </div>
             <div className="hero-proof"><span>No dice</span><span>No map</span><span>No RPG experience</span></div>
           </div>
@@ -50,7 +50,7 @@ export default function EnglishPage() {
           </div>
         </section>
 
-        <section className="feature-section feature-section--image section">
+        <section className="feature-section feature-section--image section" id="heroes">
           <div className="shell feature-split">
             <div className="feature-image">
               <img src="/assets/illustrations/races-lineup.webp" loading="lazy" decoding="async" width="1536" height="1024" alt="The six base races: human, elf, dwarf, orc, halfling, and fairy" />
@@ -59,7 +59,7 @@ export default function EnglishPage() {
               <p className="kicker">Starting heroes</p>
               <h2>6 races. 6 classes. 36 heroes.</h2>
               <p>Choose a human, elf, dwarf, orc, halfling, or fairy, then choose one of six classes. The base game contains these 36 combinations; any additional races or classes belong in future expansions.</p>
-              <Link href="/explorer/hrdinove" className="button button--outline">Explore all 36 heroes</Link>
+              <Link href="/en#play" className="button button--outline">How to start playing</Link>
             </div>
           </div>
         </section>
@@ -92,7 +92,7 @@ export default function EnglishPage() {
         <section className="vaelor-home section">
           <div className="shell vaelor-home__inner">
             <div className="vaelor-home__image"><img src="/assets/illustrations/vaelor.webp" loading="lazy" width="1536" height="1152" alt="Vaelor holds a storybook and a glowing floating die" /></div>
-            <div className="vaelor-home__copy"><p className="kicker">AI Game Master</p><h2>Vaelor, also known as Oryn</h2><p className="vaelor-title">The One Who Knows All Stories</p><p>Vaelor describes the world, controls NPCs and opponents, resolves the rules, performs virtual rolls, and remembers the adventure. The heroes’ choices always belong to the players.</p><Link href="/explorer/vaelor" className="button button--outline">Meet Vaelor</Link></div>
+            <div className="vaelor-home__copy"><p className="kicker">AI Game Master</p><h2>Vaelor, also known as Oryn</h2><p className="vaelor-title">The One Who Knows All Stories</p><p>Vaelor describes the world, controls NPCs and opponents, resolves the rules, performs virtual rolls, and remembers the adventure. The heroes’ choices always belong to the players.</p><Link href="/en#vaelor" className="button button--outline">Meet Vaelor</Link></div>
           </div>
         </section>
       </main>
