@@ -50,6 +50,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/animals/krysa",
     "/en/explorer/bestiary/people/obchodnik",
     "/en/explorer/bestiary/fantasy-humanoids/goblini-nacelnik",
+    "/en/explorer/bestiary/undead/upir",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -98,6 +99,13 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /<h1>Goblin Chieftain<\/h1>/);
       assert.match(html, /Chieftain's Orders/);
       assert.doesNotMatch(html, /Gobliní náčelník|Rozkazy náčelníka|OBRANA/);
+    }
+    if (route === "/en/explorer/bestiary/undead/upir") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Vampire<\/h1>/);
+      assert.match(html, /Sunlight Weakness/);
+      assert.doesNotMatch(html, /Upír|Sání života|OBRANA|slabina/);
     }
   }
 });
