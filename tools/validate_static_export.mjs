@@ -52,6 +52,14 @@ if (!englishPage.includes('<html lang="en">')) {
 if (/href="[^"]*\/explorer(?:\/|["?#])/.test(englishPage)) {
   failures.push("en/index.html links into the Czech-only Explorer");
 }
+const englishIds = new Set(
+  [...englishPage.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]),
+);
+for (const anchor of ["play", "heroes", "vaelor"]) {
+  if (!englishIds.has(anchor)) {
+    failures.push(`en/index.html is missing the #${anchor} anchor target`);
+  }
+}
 
 const sitemap = await readFile(join(exportRoot, "sitemap.xml"), "utf8");
 const sitemapCount = [...sitemap.matchAll(/<url>/g)].length;
