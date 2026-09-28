@@ -18,3 +18,18 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - name: Export and validate GitHub Pages site
+        run: |
+          npm run export:github-pages -- /tmp/github-pages-export
+          npm run validate:github-pages -- /tmp/github-pages-export
+          mkdir -p english-static-output/assets
+          cp -R /tmp/github-pages-export/en english-static-output/en
+          cp /tmp/github-pages-export/assets/*.css english-static-output/assets/
+          cp /tmp/github-pages-export/static.js english-static-output/static.js
+      - name: Save English static pages for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: english-static-output
+          path: english-static-output/
+          if-no-files-found: error
+          retention-days: 7
