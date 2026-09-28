@@ -46,6 +46,8 @@ test("renders representative public and encyclopedia routes", async () => {
     "/",
     "/start",
     "/en",
+    "/en/explorer/bestiary/animals",
+    "/en/explorer/bestiary/animals/krysa",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -73,6 +75,13 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /Game setup/);
       assert.match(html, /name="twitter:description" content="A cooperative fantasy RPG/);
       assert.doesNotMatch(html, /href=["']\/explorer(?:\/|["'])/);
+    }
+    if (route === "/en/explorer/bestiary/animals/krysa") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Rat<\/h1>/);
+      assert.match(html, /Slip Away/);
+      assert.doesNotMatch(html, /Krysa|Proklouznutí|OBRANA/);
     }
   }
 });

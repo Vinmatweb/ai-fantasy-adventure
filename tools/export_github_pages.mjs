@@ -29,6 +29,7 @@ const routes = [
   "/en/explorer",
   "/en/explorer/heroes",
   "/en/explorer/bestiary",
+  "/en/explorer/bestiary/animals",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -42,6 +43,7 @@ const routes = [
   ...data.classes.map((item) => `/explorer/hrdinove/povolani/${item.slug}`),
   ...data.heroes.map((item) => `/explorer/hrdinove/${item.slug}`),
   ...data.heroes.map((item) => `/en/explorer/heroes/${item.slug}`),
+  ...data.bestiary.filter((item) => item.categorySlug === "zvirata").map((item) => `/en/explorer/bestiary/animals/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),
