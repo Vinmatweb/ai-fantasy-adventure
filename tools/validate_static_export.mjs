@@ -52,6 +52,9 @@ if (!englishPage.includes('<html lang="en">')) {
 if (/href="[^"]*\/explorer(?:\/|["?#])/.test(englishPage)) {
   failures.push("en/index.html links into the Czech-only Explorer");
 }
+if (englishPage.includes("Rodinné fantasy RPG s AI Pánem jeskyně.")) {
+  failures.push("en/index.html has Czech social or structured metadata");
+}
 const englishIds = new Set(
   [...englishPage.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]),
 );

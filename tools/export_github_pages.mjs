@@ -64,7 +64,14 @@ function makeStatic(html, route) {
       `<script src="${basePath}/static.js" defer></script></body>`,
     );
 
-  if (route === "/en") output = output.replace('<html lang="cs">', '<html lang="en">');
+  if (route === "/en") {
+    output = output
+      .replace('<html lang="cs">', '<html lang="en">')
+      .replace(
+        '"description":"Kooperativní fantasy RPG pro děti a rodiče s AI Pánem jeskyně."',
+        '"description":"A cooperative fantasy RPG for children and parents, guided by an AI Game Master."',
+      );
+  }
 
   // GitHub Pages serves directory indexes at their slash-terminated URL.
   // Point links and metadata there directly to avoid a redirect on every visit.

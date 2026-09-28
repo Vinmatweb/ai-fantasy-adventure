@@ -71,6 +71,7 @@ test("renders representative public and encyclopedia routes", async () => {
       const html = await response.text();
       assert.match(html, /World overview/);
       assert.match(html, /Game setup/);
+      assert.match(html, /name="twitter:description" content="A cooperative fantasy RPG/);
       assert.doesNotMatch(html, /href=["']\/explorer(?:\/|["'])/);
     }
   }

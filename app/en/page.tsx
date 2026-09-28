@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   description: "AI Fantasy Adventure is a cooperative fantasy RPG for children and parents. Talk, choose, and explore while AI runs the world and rules.",
   alternates: { canonical: "/en", languages: { "cs-CZ": "/", en: "/en" } },
   openGraph: { locale: "en_US" },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Fantasy Adventure",
+    description: "A cooperative fantasy RPG for children and parents, guided by an AI Game Master.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 const downloads = [
