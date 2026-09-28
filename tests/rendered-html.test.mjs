@@ -53,6 +53,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/undead/upir",
     "/en/explorer/bestiary/monsters/prastary-drak",
     "/en/explorer/equipment/melee-weapons/dyka",
+    "/en/explorer/equipment/ranged-weapons/vrhaci-nuz",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -123,6 +124,14 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /Physical Attack bonus/);
       assert.match(html, /6 sp/);
       assert.doesNotMatch(html, /Dýka|blízko|Cena|Poznámka/);
+    }
+    if (route === "/en/explorer/equipment/ranged-weapons/vrhaci-nuz") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Throwing Knife<\/h1>/);
+      assert.match(html, /Short range/);
+      assert.match(html, /5 sp/);
+      assert.doesNotMatch(html, /Vrhací nůž|dálka|Cena|Poznámka/);
     }
   }
 });
