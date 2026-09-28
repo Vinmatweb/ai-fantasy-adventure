@@ -52,7 +52,7 @@ const routes = [
   ),
 ];
 
-function makeStatic(html) {
+function makeStatic(html, route) {
   let output = html
     .replaceAll(sourceSiteUrl, siteUrl)
     .replace(/<link\s+rel="modulepreload"[^>]*>/g, "")
@@ -63,6 +63,8 @@ function makeStatic(html) {
       "</body>",
       `<script src="${basePath}/static.js" defer></script></body>`,
     );
+
+  if (route === "/en") output = output.replace('<html lang="cs">', '<html lang="en">');
 
   // GitHub Pages serves directory indexes at their slash-terminated URL.
   // Point links and metadata there directly to avoid a redirect on every visit.
@@ -99,7 +101,7 @@ for (const route of routes) {
   }
   const outputFile = join(outputRoot, route.slice(1), "index.html");
   await mkdir(dirname(outputFile), { recursive: true });
-  await writeFile(outputFile, makeStatic(await response.text()));
+  await writeFile(outputFile, makeStatic(await response.text(), route));
 }
 
 const cssFiles = (await readdir(join(projectRoot, "dist/client/assets")))

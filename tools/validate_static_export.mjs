@@ -45,6 +45,14 @@ for (const file of htmlFiles) {
   }
 }
 
+const englishPage = await readFile(join(exportRoot, "en/index.html"), "utf8");
+if (!englishPage.includes('<html lang="en">')) {
+  failures.push("en/index.html must declare English as its document language");
+}
+if (/href="[^"]*\/explorer(?:\/|["?#])/.test(englishPage)) {
+  failures.push("en/index.html links into the Czech-only Explorer");
+}
+
 const sitemap = await readFile(join(exportRoot, "sitemap.xml"), "utf8");
 const sitemapCount = [...sitemap.matchAll(/<url>/g)].length;
 if (sitemapCount !== htmlFiles.length) {
