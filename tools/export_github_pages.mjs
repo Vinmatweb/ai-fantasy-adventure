@@ -31,6 +31,7 @@ const routes = [
   "/en/explorer/bestiary",
   "/en/explorer/bestiary/animals",
   "/en/explorer/bestiary/people",
+  "/en/explorer/bestiary/fantasy-humanoids",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -46,6 +47,7 @@ const routes = [
   ...data.heroes.map((item) => `/en/explorer/heroes/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "zvirata").map((item) => `/en/explorer/bestiary/animals/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "lide-npc").map((item) => `/en/explorer/bestiary/people/${item.slug}`),
+  ...data.bestiary.filter((item) => item.categorySlug === "fantasy-humanoidi").map((item) => `/en/explorer/bestiary/fantasy-humanoids/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),

@@ -49,6 +49,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/animals",
     "/en/explorer/bestiary/animals/krysa",
     "/en/explorer/bestiary/people/obchodnik",
+    "/en/explorer/bestiary/fantasy-humanoids/goblini-nacelnik",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -90,6 +91,13 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /<h1>Merchant<\/h1>/);
       assert.match(html, /Haggle/);
       assert.doesNotMatch(html, /Obchodník|Smlouvání|OBRANA/);
+    }
+    if (route === "/en/explorer/bestiary/fantasy-humanoids/goblini-nacelnik") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Goblin Chieftain<\/h1>/);
+      assert.match(html, /Chieftain's Orders/);
+      assert.doesNotMatch(html, /Gobliní náčelník|Rozkazy náčelníka|OBRANA/);
     }
   }
 });

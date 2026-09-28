@@ -4,6 +4,7 @@ import { SiteFooter } from "../../../components/SiteFooter";
 import { SiteHeader } from "../../../components/SiteHeader";
 import { gameData } from "../../../data";
 import { animalTranslations } from "../../translations/animals";
+import { fantasyHumanoidTranslations } from "../../translations/fantasy-humanoids";
 import { peopleNpcTranslations } from "../../translations/people-npcs";
 
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function EnglishBestiaryPage() {
         <nav className="link-chips" aria-label="Bestiary categories">{gameData.bestiaryCategories.map((category) => <a href={`#${category.slug}`} key={category.slug}>{categoryFor(category.slug)} <small>{category.count}</small></a>)}</nav>
         <p><Link href="/en/explorer/bestiary/animals" className="button button--outline">Open all animal profiles</Link></p>
         <p><Link href="/en/explorer/bestiary/people" className="button button--outline">Open people and NPC profiles</Link></p>
+        <p><Link href="/en/explorer/bestiary/fantasy-humanoids" className="button button--outline">Open fantasy humanoid profiles</Link></p>
         {gameData.bestiaryCategories.map((category) => (
           <section className="detail-section" id={category.slug} key={category.slug}>
             <div className="detail-section__heading"><span>✦</span><div><h2>{categoryFor(category.slug)}</h2><p>{category.count} entries from the approved Bestiary v1.0.</p></div></div>
@@ -48,7 +50,7 @@ export default function EnglishBestiaryPage() {
               {gameData.bestiary.filter((entry) => entry.categorySlug === category.slug).map((entry) => (
                 <article className="collection-card" key={entry.slug}>
                   <span className="collection-card__eyebrow">{categoryFor(category.slug)} · Challenge {entry.difficulty}</span>
-                  <h3>{peopleNpcTranslations[entry.slug]?.name ?? animalTranslations[entry.slug]?.name ?? names[entry.slug] ?? entry.name}</h3>
+                  <h3>{peopleNpcTranslations[entry.slug]?.name ?? animalTranslations[entry.slug]?.name ?? fantasyHumanoidTranslations[entry.slug]?.name ?? names[entry.slug] ?? entry.name}</h3>
                   <p>{entry.isBoss ? "Boss encounter" : "Bestiary entry"} · {entry.stats.hp} Health · {entry.xp} XP</p>
                   <div className="collection-card__footer"><span>Attack {entry.stats.physicalAttack} · Defense {entry.stats.physicalDefense}</span>{entry.isBoss && <strong>Boss</strong>}</div>
                 </article>
