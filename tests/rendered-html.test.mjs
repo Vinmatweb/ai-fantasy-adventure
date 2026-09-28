@@ -51,6 +51,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/people/obchodnik",
     "/en/explorer/bestiary/fantasy-humanoids/goblini-nacelnik",
     "/en/explorer/bestiary/undead/upir",
+    "/en/explorer/bestiary/monsters/prastary-drak",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -106,6 +107,13 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /<h1>Vampire<\/h1>/);
       assert.match(html, /Sunlight Weakness/);
       assert.doesNotMatch(html, /Upír|Sání života|OBRANA|slabina/);
+    }
+    if (route === "/en/explorer/bestiary/monsters/prastary-drak") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Ancient Dragon<\/h1>/);
+      assert.match(html, /Elder Scales and Revealed Weakness/);
+      assert.doesNotMatch(html, /Prastarý drak|Dračí dech|OBRANA/);
     }
   }
 });
