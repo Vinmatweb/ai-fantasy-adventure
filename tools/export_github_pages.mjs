@@ -27,6 +27,7 @@ const routes = [
   "/start",
   "/en",
   "/en/explorer",
+  "/en/explorer/heroes",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -39,6 +40,7 @@ const routes = [
   ...data.races.map((item) => `/explorer/hrdinove/rasy/${item.slug}`),
   ...data.classes.map((item) => `/explorer/hrdinove/povolani/${item.slug}`),
   ...data.heroes.map((item) => `/explorer/hrdinove/${item.slug}`),
+  ...data.heroes.map((item) => `/en/explorer/heroes/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),

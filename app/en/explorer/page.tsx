@@ -31,10 +31,10 @@ export default function EnglishExplorerPage() {
         </header>
         <div className="explorer-portal-grid">
           {sections.map((section) => (
-            <section className="explorer-portal" id={section.id} key={section.id}>
+            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
               <span className="explorer-portal__symbol" aria-hidden="true">{section.icon}</span>
               <small>{section.count}</small><h2>{section.title}</h2><p>{section.body}</p>
-            </section>
+            </Link>
           ))}
         </div>
         <div className="source-banner"><span aria-hidden="true">✓</span><div><strong>Built from the approved v1.0 source documents</strong><p>Translations are being added chapter by chapter. The Czech source remains the reference for exact game rules and values.</p></div></div>

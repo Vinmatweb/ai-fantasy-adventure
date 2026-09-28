@@ -16,24 +16,24 @@ export type SearchItem = {
   badge?: string;
 };
 
-export function CollectionSearch({ items, placeholder = "Hledat…" }: { items: SearchItem[]; placeholder?: string }) {
+export function CollectionSearch({ items, placeholder = "Hledat…", locale = "cs" }: { items: SearchItem[]; placeholder?: string; locale?: "cs" | "en" }) {
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase("cs");
+    const normalized = query.trim().toLocaleLowerCase(locale);
     if (!normalized) return items;
     return items.filter((item) =>
       [item.title, item.eyebrow, item.description, item.meta, item.badge]
         .filter(Boolean)
         .join(" ")
-        .toLocaleLowerCase("cs")
+        .toLocaleLowerCase(locale)
         .includes(normalized),
     );
-  }, [items, query]);
+  }, [items, locale, query]);
 
   return (
     <div className="collection-search">
       <label className="search-box">
-        <span className="sr-only">Hledat v kolekci</span>
+        <span className="sr-only">{locale === "en" ? "Search collection" : "Hledat v kolekci"}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" /></svg>
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={placeholder} />
         <span className="search-count">{filtered.length}</span>
@@ -59,7 +59,7 @@ export function CollectionSearch({ items, placeholder = "Hledat…" }: { items: 
           ))}
         </div>
       ) : (
-        <div className="empty-state">Žádná položka tomuto hledání neodpovídá.</div>
+        <div className="empty-state">{locale === "en" ? "No entries match your search." : "Žádná položka tomuto hledání neodpovídá."}</div>
       )}
     </div>
   );
