@@ -52,6 +52,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/fantasy-humanoids/goblini-nacelnik",
     "/en/explorer/bestiary/undead/upir",
     "/en/explorer/bestiary/monsters/prastary-drak",
+    "/en/explorer/equipment/melee-weapons/dyka",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -114,6 +115,14 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /<h1>Ancient Dragon<\/h1>/);
       assert.match(html, /Elder Scales and Revealed Weakness/);
       assert.doesNotMatch(html, /Prastarý drak|Dračí dech|OBRANA/);
+    }
+    if (route === "/en/explorer/equipment/melee-weapons/dyka") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Dagger<\/h1>/);
+      assert.match(html, /Physical Attack bonus/);
+      assert.match(html, /6 sp/);
+      assert.doesNotMatch(html, /Dýka|blízko|Cena|Poznámka/);
     }
   }
 });

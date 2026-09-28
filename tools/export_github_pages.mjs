@@ -34,6 +34,7 @@ const routes = [
   "/en/explorer/bestiary/fantasy-humanoids",
   "/en/explorer/bestiary/undead",
   "/en/explorer/bestiary/monsters",
+  "/en/explorer/equipment/melee-weapons",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -52,6 +53,7 @@ const routes = [
   ...data.bestiary.filter((item) => item.categorySlug === "fantasy-humanoidi").map((item) => `/en/explorer/bestiary/fantasy-humanoids/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "nemrtvi").map((item) => `/en/explorer/bestiary/undead/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "nestvury").map((item) => `/en/explorer/bestiary/monsters/${item.slug}`),
+  ...data.equipment.filter((item) => item.categorySlug === "weapons-melee").map((item) => `/en/explorer/equipment/melee-weapons/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),

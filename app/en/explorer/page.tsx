@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const sections = [
   { id: "heroes", title: "Heroes", count: `${gameData.meta.counts.heroes} starting heroes`, icon: "♜", body: "Choose from six playable races and six classes. Each of the 36 combinations has its own starting stats, abilities, and equipment." },
   { id: "bestiary", title: "Bestiary", count: `${gameData.meta.counts.bestiary} creatures and NPCs`, icon: "◉", body: "Meet the animals, people, monsters, and other inhabitants of the world, with their game statistics and stories." },
-  { id: "equipment", title: "Equipment", count: `${gameData.meta.counts.equipment} items`, icon: "⚔", body: "Browse weapons, armor, tools, potions, and magical items for your adventures." },
+  { id: "equipment", title: "Equipment", count: "13 melee weapons translated", icon: "⚔", body: "Compare approved weapon requirements, handedness, attack bonuses, and prices. More catalogue categories are being translated." },
   { id: "magic", title: "Magic", count: `${gameData.meta.counts.spells} spells`, icon: "✦", body: "Discover the spell catalogue, organized by schools of magic and ready to use in play." },
   { id: "rules", title: "Rules", count: "Quick reference", icon: "📖", body: "Learn the basics of character creation, checks, combat, and cooperative play with the AI Game Master." },
   { id: "vaelor", title: "Vaelor", count: "AI Game Master", icon: "☼", body: "Meet the guide who describes the world, plays its characters, and helps the group shape each story." },
@@ -31,7 +31,7 @@ export default function EnglishExplorerPage() {
         </header>
         <div className="explorer-portal-grid">
           {sections.map((section) => (
-            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : section.id === "bestiary" ? "/en/explorer/bestiary" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
+            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : section.id === "bestiary" ? "/en/explorer/bestiary" : section.id === "equipment" ? "/en/explorer/equipment/melee-weapons" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
               <span className="explorer-portal__symbol" aria-hidden="true">{section.icon}</span>
               <small>{section.count}</small><h2>{section.title}</h2><p>{section.body}</p>
             </Link>
