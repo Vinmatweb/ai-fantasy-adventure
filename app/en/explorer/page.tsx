@@ -31,7 +31,7 @@ export default function EnglishExplorerPage() {
         </header>
         <div className="explorer-portal-grid">
           {sections.map((section) => (
-            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
+            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : section.id === "bestiary" ? "/en/explorer/bestiary" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
               <span className="explorer-portal__symbol" aria-hidden="true">{section.icon}</span>
               <small>{section.count}</small><h2>{section.title}</h2><p>{section.body}</p>
             </Link>

@@ -28,6 +28,7 @@ const routes = [
   "/en",
   "/en/explorer",
   "/en/explorer/heroes",
+  "/en/explorer/bestiary",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
