@@ -41,7 +41,7 @@ export default function EnglishPage() {
             <p className="hero-lead">Speak, decide, and explore. AI becomes the Game Master, runs the world, and handles every rule — you are the heroes.</p>
             <div className="hero-actions">
               <a href="#play" className="button button--gold button--large">Start your adventure</a>
-              <Link href="/en#heroes" className="button button--glass button--large">Explore the world</Link>
+              <Link href="/en/explorer" className="button button--glass button--large">Explore the world</Link>
             </div>
             <div className="hero-proof"><span>No dice</span><span>No map</span><span>No RPG experience</span></div>
           </div>

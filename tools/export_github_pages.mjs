@@ -26,6 +26,7 @@ const routes = [
   "",
   "/start",
   "/en",
+  "/en/explorer",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -64,7 +65,7 @@ function makeStatic(html, route) {
       `<script src="${basePath}/static.js" defer></script></body>`,
     );
 
-  if (route === "/en") {
+  if (route === "/en" || route.startsWith("/en/")) {
     output = output
       .replace('<html lang="cs">', '<html lang="en">')
       .replace(

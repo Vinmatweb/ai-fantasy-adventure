@@ -49,8 +49,18 @@ const englishPage = await readFile(join(exportRoot, "en/index.html"), "utf8");
 if (!englishPage.includes('<html lang="en">')) {
   failures.push("en/index.html must declare English as its document language");
 }
-if (/href="[^"]*\/explorer(?:\/|["?#])/.test(englishPage)) {
+if (/href="\/ai-fantasy-adventure\/explorer(?:\/|["?#])/.test(englishPage)) {
   failures.push("en/index.html links into the Czech-only Explorer");
+}
+const englishExplorerPage = await readFile(
+  join(exportRoot, "en/explorer/index.html"),
+  "utf8",
+);
+if (!englishExplorerPage.includes('<html lang="en">')) {
+  failures.push("en/explorer/index.html must declare English as its document language");
+}
+if (!englishExplorerPage.includes("World Explorer") || englishExplorerPage.includes("Explorer světa")) {
+  failures.push("en/explorer/index.html must contain the English Explorer overview");
 }
 if (englishPage.includes("Rodinné fantasy RPG s AI Pánem jeskyně.")) {
   failures.push("en/index.html has Czech social or structured metadata");
