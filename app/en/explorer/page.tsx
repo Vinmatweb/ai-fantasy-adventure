@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const sections = [
   { id: "heroes", title: "Heroes", count: `${gameData.meta.counts.heroes} starting heroes`, icon: "♜", body: "Choose from six playable races and six classes. Each of the 36 combinations has its own starting stats, abilities, and equipment." },
   { id: "bestiary", title: "Bestiary", count: `${gameData.meta.counts.bestiary} creatures and NPCs`, icon: "◉", body: "Meet the animals, people, monsters, and other inhabitants of the world, with their game statistics and stories." },
-  { id: "equipment", title: "Equipment", count: "19 weapons translated", icon: "⚔", body: "Compare melee and ranged weapon requirements, handedness, attack bonuses, and prices. More catalogue categories are being translated." },
+  { id: "equipment", title: "Equipment", count: "25 items translated", icon: "⚔", body: "Compare melee and ranged weapons and armor, including requirements, attack or Defense bonuses, and prices. More catalogue categories are being translated." },
   { id: "magic", title: "Magic", count: `${gameData.meta.counts.spells} spells`, icon: "✦", body: "Discover the spell catalogue, organized by schools of magic and ready to use in play." },
   { id: "rules", title: "Rules", count: "Quick reference", icon: "📖", body: "Learn the basics of character creation, checks, combat, and cooperative play with the AI Game Master." },
   { id: "vaelor", title: "Vaelor", count: "AI Game Master", icon: "☼", body: "Meet the guide who describes the world, plays its characters, and helps the group shape each story." },

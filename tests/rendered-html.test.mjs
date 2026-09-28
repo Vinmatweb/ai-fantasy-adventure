@@ -54,6 +54,7 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/bestiary/monsters/prastary-drak",
     "/en/explorer/equipment/melee-weapons/dyka",
     "/en/explorer/equipment/ranged-weapons/vrhaci-nuz",
+    "/en/explorer/equipment/armor/platova-zbroj",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -132,6 +133,14 @@ test("renders representative public and encyclopedia routes", async () => {
       assert.match(html, /Short range/);
       assert.match(html, /5 sp/);
       assert.doesNotMatch(html, /Vrhací nůž|dálka|Cena|Poznámka/);
+    }
+    if (route === "/en/explorer/equipment/armor/platova-zbroj") {
+      const html = await response.text();
+      assert.match(html, /<main lang="en"/);
+      assert.match(html, /<h1>Plate Armor<\/h1>/);
+      assert.match(html, /Physical Defense bonus/);
+      assert.match(html, /25 gp/);
+      assert.doesNotMatch(html, /Plátová zbroj|těžká|Cena|Poznámka/);
     }
   }
 });
