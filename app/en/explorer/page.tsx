@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 const sections = [
   { id: "heroes", title: "Heroes", count: `${gameData.meta.counts.heroes} starting heroes`, icon: "♜", body: "Choose from six playable races and six classes. Each of the 36 combinations has its own starting stats, abilities, and equipment." },
   { id: "bestiary", title: "Bestiary", count: `${gameData.meta.counts.bestiary} creatures and NPCs`, icon: "◉", body: "Meet the animals, people, monsters, and other inhabitants of the world, with their game statistics and stories." },
-  { id: "equipment", title: "Equipment", count: "25 items translated", icon: "⚔", body: "Compare melee and ranged weapons and armor, including requirements, attack or Defense bonuses, and prices. More catalogue categories are being translated." },
-  { id: "magic", title: "Magic", count: `${gameData.meta.counts.spells} spells`, icon: "✦", body: "Discover the spell catalogue, organized by schools of magic and ready to use in play." },
+  { id: "equipment", title: "Equipment", count: `${gameData.meta.counts.equipment} items`, icon: "⚔", body: "Browse all eight equipment categories, from weapons and armor to adventuring gear, potions, and magic items." },
+  { id: "magic", title: "Magic", count: `${gameData.meta.counts.spells} spells · ${gameData.magicSchools.length} schools`, icon: "✦", body: "Explore all eleven schools of magic and read the translated rules for every spell." },
   { id: "rules", title: "Rules", count: "Quick reference", icon: "📖", body: "Learn the basics of character creation, checks, combat, and cooperative play with the AI Game Master." },
   { id: "vaelor", title: "Vaelor", count: "AI Game Master", icon: "☼", body: "Meet the guide who describes the world, plays its characters, and helps the group shape each story." },
 ] as const;
@@ -29,13 +29,13 @@ export default function EnglishExplorerPage() {
         </header>
         <div className="explorer-portal-grid">
           {sections.map((section) => (
-            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : section.id === "bestiary" ? "/en/explorer/bestiary" : section.id === "equipment" ? "/en/explorer/equipment/melee-weapons" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
+            <Link href={section.id === "heroes" ? "/en/explorer/heroes" : section.id === "bestiary" ? "/en/explorer/bestiary" : section.id === "equipment" ? "/en/explorer/equipment" : section.id === "magic" ? "/en/explorer/magic" : `#${section.id}`} className="explorer-portal" id={section.id} key={section.id}>
               <span className="explorer-portal__symbol" aria-hidden="true">{section.icon}</span>
               <small>{section.count}</small><h2>{section.title}</h2><p>{section.body}</p>
             </Link>
           ))}
         </div>
-        <div className="source-banner"><span aria-hidden="true">✓</span><div><strong>Built from the approved v1.0 source documents</strong><p>Translations are being added chapter by chapter. The Czech source remains the reference for exact game rules and values.</p></div></div>
+        <div className="source-banner"><span aria-hidden="true">✓</span><div><strong>Built from the approved v1.0 source documents</strong><p>The Czech catalogue remains the reference for exact game rules and values.</p></div></div>
         <p className="section-heading"><Link href="/en#play" className="button button--outline">How to start playing</Link></p>
       </main>
       

@@ -48,6 +48,8 @@ const routes = [
   "/en/explorer/bestiary/monsters",
   "/en/explorer/equipment",
   ...data.equipmentCategories.map((item) => `/en/explorer/equipment/${equipmentRouteBySlug[item.slug]}`),
+  "/en/explorer/magic",
+  ...data.magicSchools.map((item) => `/en/explorer/magic/${item.slug}`),
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -69,6 +71,7 @@ const routes = [
   ...data.bestiary.filter((item) => item.categorySlug === "nemrtvi").map((item) => `/en/explorer/bestiary/undead/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "nestvury").map((item) => `/en/explorer/bestiary/monsters/${item.slug}`),
   ...data.equipment.map((item) => `/en/explorer/equipment/${equipmentRouteBySlug[item.categorySlug]}/${item.slug}`),
+  ...data.spells.map((item) => `/en/explorer/magic/${item.schoolSlug}/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),
@@ -226,6 +229,9 @@ const staticScript = `(() => {
       const category = equipmentEnglishToCzech[rest[0]];
       return category ? '/explorer/vybaveni/kategorie/' + category : '/explorer/vybaveni';
     }
+    const magic = '/en/explorer/magic';
+    if (path === magic) return '/explorer/magie';
+    if (path.startsWith(magic + '/')) return '/explorer/magie/' + path.slice(magic.length + 1);
     return '/explorer';
   };
   const toEnglish = (path, hash) => {
@@ -263,7 +269,9 @@ const staticScript = `(() => {
       const category = equipmentCzechToEnglish[equipmentCategoryBySlug[slug]];
       return category ? '/en/explorer/equipment/' + category + '/' + slug : '/en/explorer/equipment/melee-weapons';
     }
-    if (path.startsWith('/explorer/magie')) return '/en/explorer#magic';
+    const magic = '/explorer/magie';
+    if (path === magic) return '/en/explorer/magic';
+    if (path.startsWith(magic + '/')) return '/en/explorer/magic/' + path.slice(magic.length + 1);
     if (path.startsWith('/explorer/pravidla')) return '/en/explorer#rules';
     if (path.startsWith('/explorer/vaelor')) return '/en/explorer#vaelor';
     return '/en';

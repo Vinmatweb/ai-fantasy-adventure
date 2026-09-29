@@ -67,6 +67,12 @@ export function englishToCzechPath(pathname: string, hash = "") {
     const category = equipmentEnglishToCzech[rest[0]];
     return category ? `/explorer/vybaveni/kategorie/${category}` : "/explorer/vybaveni";
   }
+  const magicPrefix = "/en/explorer/magic";
+  if (path === magicPrefix) return "/explorer/magie";
+  if (path.startsWith(`${magicPrefix}/`)) {
+    const rest = path.slice(magicPrefix.length + 1).split("/");
+    return `/explorer/magie/${rest.join("/")}`;
+  }
   return "/explorer";
 }
 
@@ -109,7 +115,11 @@ export function czechToEnglishPath(pathname: string) {
     const category = item && equipmentCzechToEnglish[item.categorySlug];
     return category ? `/en/explorer/equipment/${category}/${slug}` : "/en/explorer/equipment/melee-weapons";
   }
-  if (path.startsWith("/explorer/magie")) return "/en/explorer#magic";
+  const magicPrefix = "/explorer/magie";
+  if (path === magicPrefix) return "/en/explorer/magic";
+  if (path.startsWith(`${magicPrefix}/`)) {
+    return `/en/explorer/magic/${path.slice(magicPrefix.length + 1)}`;
+  }
   if (path.startsWith("/explorer/pravidla")) return "/en/explorer#rules";
   if (path.startsWith("/explorer/vaelor")) return "/en/explorer#vaelor";
   return "/en";

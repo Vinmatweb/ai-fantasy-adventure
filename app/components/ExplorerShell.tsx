@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { gameData } from "../data";
+import { magicSchoolTranslations } from "../en/translations/magic";
 
 function NavLink({ href, currentPath, children }: { href: string; currentPath: string; children: React.ReactNode }) {
   const normalizedHref = href.replace(/\/$/, "");
@@ -99,6 +100,7 @@ function EnglishExplorerNav({ currentPath }: { currentPath: string }) {
   const bestiaryOpen = currentPath.includes("/bestiary");
   const equipmentOpen = currentPath.includes("/equipment");
   const heroesOpen = currentPath.includes("/heroes");
+  const magicOpen = currentPath.includes("/magic");
   const bestiary = [
     ["animals", "Animals", 12],
     ["people", "People and NPCs", 16],
@@ -142,7 +144,13 @@ function EnglishExplorerNav({ currentPath }: { currentPath: string }) {
           {equipment.map(([slug, name, count]) => <NavLink href={`/en/explorer/equipment/${slug}`} currentPath={currentPath} key={slug}>{name}<small>{count}</small></NavLink>)}
         </div>
       </details>
-      <NavLink href="/en/explorer#magic" currentPath={currentPath}>Magic</NavLink>
+      <details open={magicOpen}>
+        <summary>Magic <span>{gameData.spells.length}</span></summary>
+        <div className="explorer-nav__branch">
+          <NavLink href="/en/explorer/magic" currentPath={currentPath}>All schools of magic</NavLink>
+          {gameData.magicSchools.map((school) => <NavLink href={`/en/explorer/magic/${school.slug}`} currentPath={currentPath} key={school.slug}>{magicSchoolTranslations[school.slug]?.name ?? school.name}<small>{gameData.spells.filter((spell) => spell.schoolSlug === school.slug).length}</small></NavLink>)}
+        </div>
+      </details>
       <NavLink href="/en/explorer#rules" currentPath={currentPath}>Rules</NavLink>
       <NavLink href="/en/explorer#vaelor" currentPath={currentPath}>Vaelor</NavLink>
     </nav>
