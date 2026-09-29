@@ -177,6 +177,96 @@ await cp(join(projectRoot, "dist/client/favicon.svg"), join(outputRoot, "favicon
 await cp(join(projectRoot, "dist/client/og-image.jpg"), join(outputRoot, "og-image.jpg"));
 
 const staticScript = `(() => {
+  const basePath = '/ai-fantasy-adventure';
+  const bestiaryEnglishToCzech = { animals: 'zvirata', people: 'lide-npc', 'fantasy-humanoids': 'fantasy-humanoidi', undead: 'nemrtvi', monsters: 'nestvury' };
+  const bestiaryCzechToEnglish = Object.fromEntries(Object.entries(bestiaryEnglishToCzech).map(([en, cs]) => [cs, en]));
+  const equipmentEnglishToCzech = { 'melee-weapons': 'weapons-melee', 'ranged-weapons': 'weapons-ranged', armor: 'armor' };
+  const equipmentCzechToEnglish = Object.fromEntries(Object.entries(equipmentEnglishToCzech).map(([en, cs]) => [cs, en]));
+  const bestiaryCategoryBySlug = ${JSON.stringify(Object.fromEntries(data.bestiary.map((entry) => [entry.slug, entry.categorySlug])))};
+  const equipmentCategoryBySlug = ${JSON.stringify(Object.fromEntries(data.equipment.map((entry) => [entry.slug, entry.categorySlug])))};
+  const cleanPath = (value) => value.replace(/\\/$/, '') || '/';
+  const toCzech = (path, hash) => {
+    path = cleanPath(path.replace(/^\\/ai-fantasy-adventure(?=\\/|$)/, ''));
+    if (path === '/en') return '/';
+    if (path === '/en/explorer') {
+      const section = (hash || '').replace(/^#/, '');
+      return ({ heroes: '/explorer/hrdinove', bestiary: '/explorer/bestiar', equipment: '/explorer/vybaveni', magic: '/explorer/magie', rules: '/explorer/pravidla', vaelor: '/explorer/vaelor' })[section] || '/explorer';
+    }
+    const heroes = '/en/explorer/heroes';
+    if (path === heroes) return '/explorer/hrdinove';
+    if (path.startsWith(heroes + '/')) {
+      const rest = path.slice(heroes.length + 1).split('/');
+      if (rest[0] === 'races') return '/explorer/hrdinove/rasy' + (rest[1] ? '/' + rest[1] : '');
+      if (rest[0] === 'classes') return '/explorer/hrdinove/povolani' + (rest[1] ? '/' + rest[1] : '');
+      return '/explorer/hrdinove/' + rest.join('/');
+    }
+    const bestiary = '/en/explorer/bestiary';
+    if (path === bestiary) {
+      const category = bestiaryEnglishToCzech[(hash || '').replace(/^#/, '')];
+      return category ? '/explorer/bestiar/kategorie/' + category : '/explorer/bestiar';
+    }
+    if (path.startsWith(bestiary + '/')) {
+      const rest = path.slice(bestiary.length + 1).split('/');
+      if (rest.length > 1) return '/explorer/bestiar/' + rest[1];
+      const category = bestiaryEnglishToCzech[rest[0]];
+      return category ? '/explorer/bestiar/kategorie/' + category : '/explorer/bestiar';
+    }
+    const equipment = '/en/explorer/equipment';
+    if (path.startsWith(equipment + '/')) {
+      const rest = path.slice(equipment.length + 1).split('/');
+      if (rest.length > 1) return '/explorer/vybaveni/' + rest[1];
+      const category = equipmentEnglishToCzech[rest[0]];
+      return category ? '/explorer/vybaveni/kategorie/' + category : '/explorer/vybaveni';
+    }
+    return '/explorer';
+  };
+  const toEnglish = (path, hash) => {
+    path = cleanPath(path.replace(/^\\/ai-fantasy-adventure(?=\\/|$)/, ''));
+    if (path === '/') return '/en';
+    if (path === '/start') return '/en#play';
+    if (path === '/explorer') return '/en/explorer';
+    if (path === '/explorer/vybaveni') return '/en/explorer/equipment/melee-weapons';
+    const heroes = '/explorer/hrdinove';
+    if (path === heroes) return '/en/explorer/heroes';
+    if (path.startsWith(heroes + '/')) {
+      const rest = path.slice(heroes.length + 1).split('/');
+      if (rest[0] === 'rasy') return '/en/explorer/heroes/races' + (rest[1] ? '/' + rest[1] : '');
+      if (rest[0] === 'povolani') return '/en/explorer/heroes/classes' + (rest[1] ? '/' + rest[1] : '');
+      return '/en/explorer/heroes/' + rest.join('/');
+    }
+    const bestiary = '/explorer/bestiar';
+    if (path === bestiary) return '/en/explorer/bestiary';
+    if (path.startsWith(bestiary + '/kategorie/')) {
+      const category = path.slice((bestiary + '/kategorie/').length);
+      return '/en/explorer/bestiary/' + (bestiaryCzechToEnglish[category] || '');
+    }
+    if (path.startsWith(bestiary + '/')) {
+      const slug = path.slice(bestiary.length + 1);
+      const category = bestiaryCzechToEnglish[bestiaryCategoryBySlug[slug]];
+      return category ? '/en/explorer/bestiary/' + category + '/' + slug : '/en/explorer/bestiary';
+    }
+    const equipment = '/explorer/vybaveni';
+    if (path.startsWith(equipment + '/kategorie/')) {
+      const category = path.slice((equipment + '/kategorie/').length);
+      return '/en/explorer/equipment/' + (equipmentCzechToEnglish[category] || 'melee-weapons');
+    }
+    if (path.startsWith(equipment + '/')) {
+      const slug = path.slice(equipment.length + 1);
+      const category = equipmentCzechToEnglish[equipmentCategoryBySlug[slug]];
+      return category ? '/en/explorer/equipment/' + category + '/' + slug : '/en/explorer/equipment/melee-weapons';
+    }
+    if (path.startsWith('/explorer/magie')) return '/en/explorer#magic';
+    if (path.startsWith('/explorer/pravidla')) return '/en/explorer#rules';
+    if (path.startsWith('/explorer/vaelor')) return '/en/explorer#vaelor';
+    return '/en';
+  };
+  const isEnglish = document.documentElement.lang === 'en';
+  const languageLink = [...document.querySelectorAll('.language-switch a')].find((link) => (link.textContent || '').trim() === (isEnglish ? 'CZ' : 'EN'));
+  if (languageLink) {
+    const destination = isEnglish ? toCzech(location.pathname, location.hash) : toEnglish(location.pathname, location.hash);
+    languageLink.href = basePath + destination;
+  }
+
   const fold = (value) => value.toLocaleLowerCase('cs');
   document.querySelectorAll('.collection-search').forEach((root) => {
     const input = root.querySelector('input');
