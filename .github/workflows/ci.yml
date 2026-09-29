@@ -22,7 +22,7 @@ jobs:
         run: |
           npm run export:github-pages -- /tmp/github-pages-export
           npm run validate:github-pages -- /tmp/github-pages-export
-          mkdir -p english-static-output/assets czech-magic-static-output/assets
+          mkdir -p english-static-output/assets czech-magic-static-output/assets czech-magic-static-output/explorer
           cp -R /tmp/github-pages-export/en english-static-output/en
           cp -R /tmp/github-pages-export/explorer/magie czech-magic-static-output/explorer/magie
           cp -R /tmp/github-pages-export/assets/magic czech-magic-static-output/assets/magic
