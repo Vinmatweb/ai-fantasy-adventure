@@ -376,6 +376,8 @@ function spellItems(spells: Spell[]): SearchItem[] {
     description: spell.effect,
     meta: `Min. CH ${spell.minIntelligence} · Min. Level ${spell.minLevel}`,
     badge: spell.bonus,
+    image: `/assets/magic/spells/${spell.schoolSlug}/${spell.slug}.webp`,
+    imageAlt: `Barevná ilustrace kouzla ${spell.name}`,
   }));
 }
 
@@ -397,7 +399,7 @@ function SpellDetail({ spell }: { spell: Spell }) {
       <Breadcrumbs items={[{ label: "Magie", href: "/explorer/magie" }, { label: school.name, href: `/explorer/magie/${school.slug}` }, { label: spell.name }]} />
       <div className={`detail-hero spell-detail spell-detail--${school.tone}`}>
         <div className="detail-hero__copy"><p className="kicker">{school.name} • {spell.type}</p><h1>{spell.name}</h1><p className="lead">{spell.effect}</p><div className="pill-row"><span>Min. CH {spell.minIntelligence}</span><span>Min. Level {spell.minLevel}</span><strong>{spell.bonus}</strong></div></div>
-        <AssetSlot title={spell.name} eyebrow={`Barevný motiv • ${school.name}`} symbol={school.symbol} tone={school.tone} src={`/assets/magic/${school.slug}.webp`} alt={`Barevný magický motiv školy ${school.name}`}><p>Společný motiv školy; unikátní efekt konkrétního kouzla lze doplnit později.</p></AssetSlot>
+        <AssetSlot title={spell.name} eyebrow={`Ilustrace kouzla • ${school.name}`} symbol={school.symbol} tone={school.tone} src={`/assets/magic/spells/${spell.schoolSlug}/${spell.slug}.webp`} alt={`Barevná fantasy ilustrace kouzla ${spell.name}`} />
       </div>
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Parametry kouzla</h2><p>Přesný řádek z katalogu 110 kouzel.</p></div></div><dl className="definition-table"><div><dt>Škola</dt><dd>{spell.school}</dd></div><div><dt>Typ</dt><dd>{spell.type}</dd></div><div><dt>Min. Chytrost</dt><dd>{spell.minIntelligence}</dd></div><div><dt>Min. Level</dt><dd>{spell.minLevel}</dd></div><div><dt>Bonus</dt><dd>{spell.bonus}</dd></div><div><dt>Cíl</dt><dd>{spell.target}</dd></div><div><dt>Trvání</dt><dd>{spell.duration}</dd></div><div><dt>Omezení</dt><dd>{spell.limitations}</dd></div><div className="definition-table__wide"><dt>Přesný účinek</dt><dd>{spell.effect}</dd></div></dl></section>
       <div className="notice"><strong>Znát nestačí splnit požadavek</strong><p>Min. CH a Min. Level pouze dovolují kouzlo se naučit. Postava je musí skutečně získat při levelování, od učitele, z knihy, svitku, odměny, nálezu nebo příběhu.</p></div>
