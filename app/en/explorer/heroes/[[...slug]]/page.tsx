@@ -176,7 +176,7 @@ function MoreMaterials() {
 
 function HeroesOverview() {
   return <>
-    <Breadcrumbs items={[{ label: "Heroes" }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes" }]} />
     <HeroSectionNav active="heroes" />
     <header className="encyclopedia-header"><div><p className="kicker">Six races × six classes</p><h1>36 starting heroes</h1><p>Every race and class combination has its own approved starting attributes, Health, abilities, and equipment.</p></div><strong className="encyclopedia-header__count">{gameData.heroes.length} heroes</strong></header>
     <div className="editorial-image"><img src="/assets/illustrations/classes-lineup.webp" width="1672" height="941" alt="The six starting classes: Warrior, Ranger, Wizard, Rogue, Healer, and Bard" /></div>
@@ -186,7 +186,7 @@ function HeroesOverview() {
 
 function RacesOverview() {
   return <>
-    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races" }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races" }]} />
     <HeroSectionNav active="races" />
     <header className="encyclopedia-header"><div><p className="kicker">Heroes</p><h1>Six playable races</h1><p>Each race has approved attribute modifiers, one strong and one weak attribute, and a racial ability.</p></div><strong className="encyclopedia-header__count">{gameData.races.length} races</strong></header>
     <div className="editorial-image"><img src="/assets/illustrations/races-lineup.webp" width="1536" height="1024" alt="The six playable races: Human, Elf, Dwarf, Orc, Halfling, and Fairy" /></div>
@@ -198,7 +198,7 @@ function RaceDetail({ race }: { race: Race }) {
   const translation = raceTranslations[race.slug];
   const heroes = gameData.heroes.filter((hero) => hero.raceSlug === race.slug);
   return <>
-    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races", href: "/en/explorer/heroes/races" }, { label: translation.name }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races", href: "/en/explorer/heroes/races" }, { label: translation.name }]} />
     <HeroSectionNav active="races" />
     <div className="detail-hero"><div className="detail-hero__copy"><p className="kicker">Playable race</p><h1>{translation.name}</h1><p className="lead">{translation.tagline}</p><p>{translation.description}</p><div className="pill-row"><span>Strong: {translatedAttribute(race.strong)}</span><span>Weak: {translatedAttribute(race.weak)}</span></div></div><AssetSlot title={translation.name} eyebrow="Race illustration" src={raceImage(race.slug)} alt={`Fantasy illustration of the ${translation.name} race`} /></div>
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Attribute modifiers</h2><p>All other attributes remain unchanged. Class choice does not change which attribute is strong or weak.</p></div></div><EnglishAttributeGrid values={race.modifiers} modifiers /></section>
@@ -210,7 +210,7 @@ function RaceDetail({ race }: { race: Race }) {
 
 function ClassesOverview() {
   return <>
-    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes" }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes" }]} />
     <HeroSectionNav active="classes" />
     <header className="encyclopedia-header"><div><p className="kicker">Heroes</p><h1>Six character classes</h1><p>Each class adds exactly +3 attribute points, a class ability, and an approved starting loadout.</p></div><strong className="encyclopedia-header__count">{gameData.classes.length} classes</strong></header>
     <div className="editorial-image"><img src="/assets/illustrations/classes-lineup.webp" width="1672" height="941" alt="The six character classes: Warrior, Ranger, Wizard, Rogue, Healer, and Bard" /></div>
@@ -224,7 +224,7 @@ function ClassDetail({ characterClass }: { characterClass: CharacterClass }) {
   const equipment = characterClass.startingEquipment;
   const note = startingEquipmentNotes[characterClass.slug];
   return <>
-    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes", href: "/en/explorer/heroes/classes" }, { label: translation.name }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes", href: "/en/explorer/heroes/classes" }, { label: translation.name }]} />
     <HeroSectionNav active="classes" />
     <div className="detail-hero"><div className="detail-hero__copy"><p className="kicker">Character class</p><h1>{translation.name}</h1><p className="lead">{translation.tagline}</p><p>{translation.description}</p><div className="pill-row"><span>{translation.playStyle}</span></div></div><AssetSlot title={translation.name} eyebrow="Class illustration" src={`/assets/heroes/clovek-${characterClass.slug}.webp`} alt={`Fantasy illustration of the ${translation.name} class`} /></div>
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Class bonuses</h2><p>Class bonuses change attribute values, not the strong or weak attribute category.</p></div></div><EnglishAttributeGrid values={characterClass.modifiers} modifiers /></section>
@@ -240,7 +240,7 @@ function HeroDetail({ hero }: { hero: Hero }) {
   const loadout = hero.startingEquipment;
   const note = startingEquipmentNotes[hero.classSlug];
   return <>
-    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: `${race.name} – ${characterClass.name}` }]} />
+    <Breadcrumbs locale="en" items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: `${race.name} – ${characterClass.name}` }]} />
     <HeroSectionNav active="heroes" />
     <header className="encyclopedia-header"><div><p className="kicker">Starting hero · Level 1</p><h1>{race.name} – {characterClass.name}</h1><p className="lead">{race.tagline} {characterClass.tagline}</p><p>{race.description} {characterClass.description}</p></div><strong className="encyclopedia-header__count">{hero.hp} Health</strong></header>
     <div className="detail-hero"><div className="detail-hero__copy"><div className="pill-row"><Link href={`/en/explorer/heroes/races/${hero.raceSlug}`}>{race.name}</Link><Link href={`/en/explorer/heroes/classes/${hero.classSlug}`}>{characterClass.name}</Link><span>Strong: {translatedAttribute(hero.strong)}</span><span>Weak: {translatedAttribute(hero.weak)}</span></div></div><AssetSlot title={`${race.name} – ${characterClass.name}`} eyebrow="Level 1 hero illustration" src={heroImage(hero)} alt={`Fantasy illustration of a ${race.name} ${characterClass.name}`} /></div>

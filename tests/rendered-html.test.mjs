@@ -55,6 +55,8 @@ test("renders representative public and encyclopedia routes", async () => {
     "/en/explorer/equipment/melee-weapons/dyka",
     "/en/explorer/equipment/ranged-weapons/vrhaci-nuz",
     "/en/explorer/equipment/armor/platova-zbroj",
+    "/en/explorer/rules",
+    "/en/explorer/vaelor",
     "/explorer",
     "/explorer/hrdinove/clovek-bojovnik",
     "/explorer/hrdinove/vila-lecitel",
@@ -76,12 +78,33 @@ test("renders representative public and encyclopedia routes", async () => {
       context,
     );
     assert.equal(response.status, 200, route);
+    if (route === "/explorer/magie/ohen/ohniva-koule") {
+      const html = await response.text();
+      assert.match(html, /src="\/assets\/magic\/spells\/ohen\/ohniva-koule\.webp"/);
+      assert.doesNotMatch(html, /Společný motiv školy/);
+    }
     if (route === "/en") {
       const html = await response.text();
       assert.match(html, /World overview/);
-      assert.match(html, /Game setup/);
+      assert.match(html, /Rules/);
       assert.match(html, /name="twitter:description" content="A cooperative fantasy RPG/);
       assert.doesNotMatch(html, /href=["']\/explorer(?:\/|["'])/);
+    }
+    if (route === "/en/explorer/rules") {
+      const html = await response.text();
+      assert.match(html, /aria-label="Breadcrumb"/);
+      assert.doesNotMatch(html, /Domů/);
+      assert.match(html, /Rules at a glance/);
+      assert.match(html, /XP to the next level = 200 \+ 100 × current level/);
+      assert.match(html, /current downloadable source documents are in Czech/);
+    }
+    if (route === "/en/explorer/vaelor") {
+      const html = await response.text();
+      assert.match(html, /aria-label="Breadcrumb"/);
+      assert.doesNotMatch(html, /Domů/);
+      assert.match(html, /The One Who Knows All Stories/);
+      assert.match(html, /not an NPC or another character in the world/);
+      assert.match(html, /The players always make the decisions/);
     }
     if (route === "/en/explorer/bestiary/animals/krysa") {
       const html = await response.text();

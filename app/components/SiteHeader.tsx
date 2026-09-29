@@ -16,8 +16,8 @@ export function SiteHeader({ locale = "cs", languageHref }: { locale?: "cs" | "e
         <nav className="site-nav" aria-label={english ? "Main navigation" : "Hlavní navigace"}>
           <Link href={english ? "/en#play" : "/start"}>{english ? "Start playing" : "Začít hrát"}</Link>
           <Link href={english ? "/en/explorer" : "/explorer"}>{english ? "World overview" : "Explorer světa"}</Link>
-          <Link href={english ? "/en#play" : "/explorer/pravidla"}>{english ? "Game setup" : "Pravidla"}</Link>
-          <Link href={english ? "/en#vaelor" : "/explorer/vaelor"}>Vaelor</Link>
+          <Link href={english ? "/en/explorer/rules" : "/explorer/pravidla"}>{english ? "Rules" : "Pravidla"}</Link>
+          <Link href={english ? "/en/explorer/vaelor" : "/explorer/vaelor"}>Vaelor</Link>
         </nav>
         <div className="site-actions">
           <span className="language-switch" aria-label={english ? "Website language" : "Jazyk webu"}>

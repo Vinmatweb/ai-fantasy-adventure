@@ -151,8 +151,8 @@ function EnglishExplorerNav({ currentPath }: { currentPath: string }) {
           {gameData.magicSchools.map((school) => <NavLink href={`/en/explorer/magic/${school.slug}`} currentPath={currentPath} key={school.slug}>{magicSchoolTranslations[school.slug]?.name ?? school.name}<small>{gameData.spells.filter((spell) => spell.schoolSlug === school.slug).length}</small></NavLink>)}
         </div>
       </details>
-      <NavLink href="/en/explorer#rules" currentPath={currentPath}>Rules</NavLink>
-      <NavLink href="/en/explorer#vaelor" currentPath={currentPath}>Vaelor</NavLink>
+      <NavLink href="/en/explorer/rules" currentPath={currentPath}>Rules</NavLink>
+      <NavLink href="/en/explorer/vaelor" currentPath={currentPath}>Vaelor</NavLink>
     </nav>
   );
 }

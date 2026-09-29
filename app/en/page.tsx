@@ -98,7 +98,7 @@ export default function EnglishPage() {
         <section className="vaelor-home section" id="vaelor">
           <div className="shell vaelor-home__inner">
             <div className="vaelor-home__image"><img src="/assets/illustrations/vaelor.webp" loading="lazy" width="1536" height="1152" alt="Vaelor holds a storybook and a glowing floating die" /></div>
-            <div className="vaelor-home__copy"><p className="kicker">AI Game Master</p><h2>Vaelor, also known as Oryn</h2><p className="vaelor-title">The One Who Knows All Stories</p><p>Vaelor describes the world, controls NPCs and opponents, resolves the rules, performs virtual rolls, and remembers the adventure. The heroes’ choices always belong to the players.</p><Link href="/en#vaelor" className="button button--outline">Meet Vaelor</Link></div>
+            <div className="vaelor-home__copy"><p className="kicker">AI Game Master</p><h2>Vaelor, also known as Oryn</h2><p className="vaelor-title">The One Who Knows All Stories</p><p>Vaelor describes the world, controls NPCs and opponents, resolves the rules, performs virtual rolls, and remembers the adventure. The heroes’ choices always belong to the players.</p><Link href="/en/explorer/vaelor" className="button button--outline">Meet Vaelor</Link></div>
           </div>
         </section>
       </main>

@@ -73,6 +73,8 @@ export function englishToCzechPath(pathname: string, hash = "") {
     const rest = path.slice(magicPrefix.length + 1).split("/");
     return `/explorer/magie/${rest.join("/")}`;
   }
+  if (path === "/en/explorer/rules") return "/explorer/pravidla";
+  if (path === "/en/explorer/vaelor") return "/explorer/vaelor";
   return "/explorer";
 }
 
@@ -120,7 +122,7 @@ export function czechToEnglishPath(pathname: string) {
   if (path.startsWith(`${magicPrefix}/`)) {
     return `/en/explorer/magic/${path.slice(magicPrefix.length + 1)}`;
   }
-  if (path.startsWith("/explorer/pravidla")) return "/en/explorer#rules";
-  if (path.startsWith("/explorer/vaelor")) return "/en/explorer#vaelor";
+  if (path === "/explorer/pravidla") return "/en/explorer/rules";
+  if (path === "/explorer/vaelor") return "/en/explorer/vaelor";
   return "/en";
 }

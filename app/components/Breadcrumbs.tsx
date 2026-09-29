@@ -1,11 +1,12 @@
 import Link from "next/link";
 
-export function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
+export function Breadcrumbs({ items, locale = "cs" }: { items: Array<{ label: string; href?: string }>; locale?: "cs" | "en" }) {
+  const english = locale === "en";
   return (
-    <nav className="breadcrumbs" aria-label="Drobečková navigace">
-      <Link href="/">Domů</Link>
+    <nav className="breadcrumbs" aria-label={english ? "Breadcrumb" : "Drobečková navigace"}>
+      <Link href={english ? "/en" : "/"}>{english ? "Home" : "Domů"}</Link>
       <span>/</span>
-      <Link href="/explorer">Explorer</Link>
+      <Link href={english ? "/en/explorer" : "/explorer"}>{english ? "World Explorer" : "Explorer"}</Link>
       {items.map((item, index) => (
         <span className="breadcrumbs__item" key={`${item.label}-${index}`}>
           <span>/</span>

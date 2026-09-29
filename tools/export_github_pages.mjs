@@ -50,6 +50,8 @@ const routes = [
   ...data.equipmentCategories.map((item) => `/en/explorer/equipment/${equipmentRouteBySlug[item.slug]}`),
   "/en/explorer/magic",
   ...data.magicSchools.map((item) => `/en/explorer/magic/${item.slug}`),
+  "/en/explorer/rules",
+  "/en/explorer/vaelor",
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -232,6 +234,8 @@ const staticScript = `(() => {
     const magic = '/en/explorer/magic';
     if (path === magic) return '/explorer/magie';
     if (path.startsWith(magic + '/')) return '/explorer/magie/' + path.slice(magic.length + 1);
+    if (path === '/en/explorer/rules') return '/explorer/pravidla';
+    if (path === '/en/explorer/vaelor') return '/explorer/vaelor';
     return '/explorer';
   };
   const toEnglish = (path, hash) => {
@@ -272,8 +276,8 @@ const staticScript = `(() => {
     const magic = '/explorer/magie';
     if (path === magic) return '/en/explorer/magic';
     if (path.startsWith(magic + '/')) return '/en/explorer/magic/' + path.slice(magic.length + 1);
-    if (path.startsWith('/explorer/pravidla')) return '/en/explorer#rules';
-    if (path.startsWith('/explorer/vaelor')) return '/en/explorer#vaelor';
+    if (path === '/explorer/pravidla') return '/en/explorer/rules';
+    if (path === '/explorer/vaelor') return '/en/explorer/vaelor';
     return '/en';
   };
   const isEnglish = document.documentElement.lang === 'en';
