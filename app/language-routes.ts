@@ -14,6 +14,11 @@ const equipmentEnglishToCzech: Record<string, string> = {
   "melee-weapons": "weapons-melee",
   "ranged-weapons": "weapons-ranged",
   armor: "armor",
+  shields: "shields",
+  "adventure-gear": "adventure-gear",
+  instruments: "instruments",
+  potions: "potions",
+  "magic-items": "magic-items",
 };
 const equipmentCzechToEnglish = Object.fromEntries(
   Object.entries(equipmentEnglishToCzech).map(([english, czech]) => [czech, english]),
@@ -55,6 +60,7 @@ export function englishToCzechPath(pathname: string, hash = "") {
     return category ? `/explorer/bestiar/kategorie/${category}` : "/explorer/bestiar";
   }
   const equipmentPrefix = "/en/explorer/equipment";
+  if (path === equipmentPrefix) return "/explorer/vybaveni";
   if (path.startsWith(`${equipmentPrefix}/`)) {
     const rest = path.slice(equipmentPrefix.length + 1).split("/");
     if (rest.length > 1) return `/explorer/vybaveni/${rest[1]}`;
@@ -68,7 +74,7 @@ export function czechToEnglishPath(pathname: string) {
   const path = pathname.replace(/\/$/, "") || "/";
   if (path === "/") return "/en";
   if (path === "/explorer") return "/en/explorer";
-  if (path === "/explorer/vybaveni") return "/en/explorer/equipment/melee-weapons";
+  if (path === "/explorer/vybaveni") return "/en/explorer/equipment";
   const heroPrefix = "/explorer/hrdinove";
   if (path === heroPrefix) return "/en/explorer/heroes";
   if (path.startsWith(`${heroPrefix}/`)) {

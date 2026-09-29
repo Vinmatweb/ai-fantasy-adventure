@@ -110,6 +110,11 @@ function EnglishExplorerNav({ currentPath }: { currentPath: string }) {
     ["melee-weapons", "Melee weapons", 13],
     ["ranged-weapons", "Ranged weapons", 6],
     ["armor", "Armor", 6],
+    ["shields", "Shields", 3],
+    ["adventure-gear", "Adventuring gear", 28],
+    ["instruments", "Musical instruments", 6],
+    ["potions", "Potions", 9],
+    ["magic-items", "Magic items", 21],
   ] as const;
   return (
     <nav className="explorer-nav" aria-label="World Explorer">
@@ -131,8 +136,9 @@ function EnglishExplorerNav({ currentPath }: { currentPath: string }) {
         </div>
       </details>
       <details open={equipmentOpen}>
-        <summary>Equipment <span>25</span></summary>
+        <summary>Equipment <span>92</span></summary>
         <div className="explorer-nav__branch">
+          <NavLink href="/en/explorer/equipment" currentPath={currentPath}>Full catalogue</NavLink>
           {equipment.map(([slug, name, count]) => <NavLink href={`/en/explorer/equipment/${slug}`} currentPath={currentPath} key={slug}>{name}<small>{count}</small></NavLink>)}
         </div>
       </details>

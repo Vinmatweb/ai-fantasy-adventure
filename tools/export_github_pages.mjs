@@ -21,6 +21,16 @@ const env = {
   ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
 };
 const context = { waitUntil() {}, passThroughOnException() {} };
+const equipmentRouteBySlug = {
+  "weapons-melee": "melee-weapons",
+  "weapons-ranged": "ranged-weapons",
+  armor: "armor",
+  shields: "shields",
+  "adventure-gear": "adventure-gear",
+  instruments: "instruments",
+  potions: "potions",
+  "magic-items": "magic-items",
+};
 
 const routes = [
   "",
@@ -29,18 +39,15 @@ const routes = [
   "/en/explorer",
   "/en/explorer/heroes",
   "/en/explorer/heroes/races",
-  ...data.races.map((item) => `/en/explorer/heroes/races/${item.slug}`),
   "/en/explorer/heroes/classes",
-  ...data.classes.map((item) => `/en/explorer/heroes/classes/${item.slug}`),
   "/en/explorer/bestiary",
   "/en/explorer/bestiary/animals",
   "/en/explorer/bestiary/people",
   "/en/explorer/bestiary/fantasy-humanoids",
   "/en/explorer/bestiary/undead",
   "/en/explorer/bestiary/monsters",
-  "/en/explorer/equipment/melee-weapons",
-  "/en/explorer/equipment/ranged-weapons",
-  "/en/explorer/equipment/armor",
+  "/en/explorer/equipment",
+  ...data.equipmentCategories.map((item) => `/en/explorer/equipment/${equipmentRouteBySlug[item.slug]}`),
   "/explorer",
   "/explorer/hrdinove",
   "/explorer/hrdinove/rasy",
@@ -54,14 +61,14 @@ const routes = [
   ...data.classes.map((item) => `/explorer/hrdinove/povolani/${item.slug}`),
   ...data.heroes.map((item) => `/explorer/hrdinove/${item.slug}`),
   ...data.heroes.map((item) => `/en/explorer/heroes/${item.slug}`),
+  ...data.races.map((item) => `/en/explorer/heroes/races/${item.slug}`),
+  ...data.classes.map((item) => `/en/explorer/heroes/classes/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "zvirata").map((item) => `/en/explorer/bestiary/animals/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "lide-npc").map((item) => `/en/explorer/bestiary/people/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "fantasy-humanoidi").map((item) => `/en/explorer/bestiary/fantasy-humanoids/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "nemrtvi").map((item) => `/en/explorer/bestiary/undead/${item.slug}`),
   ...data.bestiary.filter((item) => item.categorySlug === "nestvury").map((item) => `/en/explorer/bestiary/monsters/${item.slug}`),
-  ...data.equipment.filter((item) => item.categorySlug === "weapons-melee").map((item) => `/en/explorer/equipment/melee-weapons/${item.slug}`),
-  ...data.equipment.filter((item) => item.categorySlug === "weapons-ranged").map((item) => `/en/explorer/equipment/ranged-weapons/${item.slug}`),
-  ...data.equipment.filter((item) => item.categorySlug === "armor").map((item) => `/en/explorer/equipment/armor/${item.slug}`),
+  ...data.equipment.map((item) => `/en/explorer/equipment/${equipmentRouteBySlug[item.categorySlug]}/${item.slug}`),
   ...data.bestiaryCategories.map(
     (item) => `/explorer/bestiar/kategorie/${item.slug}`,
   ),
@@ -180,7 +187,7 @@ const staticScript = `(() => {
   const basePath = '/ai-fantasy-adventure';
   const bestiaryEnglishToCzech = { animals: 'zvirata', people: 'lide-npc', 'fantasy-humanoids': 'fantasy-humanoidi', undead: 'nemrtvi', monsters: 'nestvury' };
   const bestiaryCzechToEnglish = Object.fromEntries(Object.entries(bestiaryEnglishToCzech).map(([en, cs]) => [cs, en]));
-  const equipmentEnglishToCzech = { 'melee-weapons': 'weapons-melee', 'ranged-weapons': 'weapons-ranged', armor: 'armor' };
+  const equipmentEnglishToCzech = { 'melee-weapons': 'weapons-melee', 'ranged-weapons': 'weapons-ranged', armor: 'armor', shields: 'shields', 'adventure-gear': 'adventure-gear', instruments: 'instruments', potions: 'potions', 'magic-items': 'magic-items' };
   const equipmentCzechToEnglish = Object.fromEntries(Object.entries(equipmentEnglishToCzech).map(([en, cs]) => [cs, en]));
   const bestiaryCategoryBySlug = ${JSON.stringify(Object.fromEntries(data.bestiary.map((entry) => [entry.slug, entry.categorySlug])))};
   const equipmentCategoryBySlug = ${JSON.stringify(Object.fromEntries(data.equipment.map((entry) => [entry.slug, entry.categorySlug])))};
@@ -212,6 +219,7 @@ const staticScript = `(() => {
       return category ? '/explorer/bestiar/kategorie/' + category : '/explorer/bestiar';
     }
     const equipment = '/en/explorer/equipment';
+    if (path === equipment) return '/explorer/vybaveni';
     if (path.startsWith(equipment + '/')) {
       const rest = path.slice(equipment.length + 1).split('/');
       if (rest.length > 1) return '/explorer/vybaveni/' + rest[1];
@@ -225,7 +233,7 @@ const staticScript = `(() => {
     if (path === '/') return '/en';
     if (path === '/start') return '/en#play';
     if (path === '/explorer') return '/en/explorer';
-    if (path === '/explorer/vybaveni') return '/en/explorer/equipment/melee-weapons';
+    if (path === '/explorer/vybaveni') return '/en/explorer/equipment';
     const heroes = '/explorer/hrdinove';
     if (path === heroes) return '/en/explorer/heroes';
     if (path.startsWith(heroes + '/')) {

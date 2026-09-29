@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CollectionSearch, type SearchItem } from "../../../../components/CollectionSearch";
 import { gameData } from "../../../../data";
+import { EquipmentCategoryNav } from "../../../components/EquipmentCategoryNav";
 import { meleeWeaponTranslations, translateMeleeWeaponFields } from "../../../translations/equipment-melee";
 
 export const metadata: Metadata = {
@@ -30,5 +31,5 @@ const items: SearchItem[] = entries.map((item) => {
 });
 
 export default function EnglishMeleeWeaponsPage() {
-  return <><main lang="en" ><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><strong>Equipment</strong><span>/</span><strong>Melee Weapons</strong></nav><nav className="link-chips" aria-label="Translated equipment categories"><Link href="/en/explorer/equipment/melee-weapons/">Melee Weapons <small>13</small></Link><Link href="/en/explorer/equipment/ranged-weapons/">Ranged Weapons <small>6</small></Link><Link href="/en/explorer/equipment/armor/">Armor <small>6</small></Link></nav><header className="encyclopedia-header"><div><p className="kicker">Equipment catalogue v1.0 · Category 1 of 8</p><h1>Melee Weapons</h1><p>Compare the approved weapon requirements, handedness, attack bonuses, prices, and notes. Values follow the original catalogue.</p></div><strong className="encyclopedia-header__count">{entries.length} items</strong></header><CollectionSearch items={items} placeholder="Search melee weapons…" locale="en" /></main></>;
+  return <><main lang="en" ><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><strong>Equipment</strong><span>/</span><strong>Melee Weapons</strong></nav><EquipmentCategoryNav /><header className="encyclopedia-header"><div><p className="kicker">Equipment catalogue v1.0 · Category 1 of 8</p><h1>Melee Weapons</h1><p>Compare the approved weapon requirements, handedness, attack bonuses, prices, and notes. Values follow the original catalogue.</p></div><strong className="encyclopedia-header__count">{entries.length} items</strong></header><CollectionSearch items={items} placeholder="Search melee weapons…" locale="en" /></main></>;
 }

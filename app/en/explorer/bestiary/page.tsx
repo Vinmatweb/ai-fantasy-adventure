@@ -31,6 +31,7 @@ const names: Record<string, string> = {
 };
 
 const categoryFor = (slug: string) => categoryNames[slug] ?? slug;
+const routeFor = (slug: string) => ({ zvirata: "animals", "lide-npc": "people", "fantasy-humanoidi": "fantasy-humanoids", nemrtvi: "undead", nestvury: "monsters" } as Record<string, string>)[slug] ?? "animals";
 
 export default function EnglishBestiaryPage() {
   return (
@@ -50,12 +51,12 @@ export default function EnglishBestiaryPage() {
             <div className="detail-section__heading"><span>✦</span><div><h2>{categoryFor(category.slug)}</h2><p>{category.count} entries from the approved Bestiary v1.0.</p></div></div>
             <div className="collection-grid">
               {gameData.bestiary.filter((entry) => entry.categorySlug === category.slug).map((entry) => (
-                <article className="collection-card" key={entry.slug}>
+                <Link className="collection-card" href={`/en/explorer/bestiary/${routeFor(entry.categorySlug)}/${entry.slug}`} key={entry.slug}>
                   <span className="collection-card__eyebrow">{categoryFor(category.slug)} · Challenge {entry.difficulty}</span>
                   <h3>{peopleNpcTranslations[entry.slug]?.name ?? animalTranslations[entry.slug]?.name ?? fantasyHumanoidTranslations[entry.slug]?.name ?? undeadTranslations[entry.slug]?.name ?? monsterTranslations[entry.slug]?.name ?? names[entry.slug] ?? entry.name}</h3>
                   <p>{entry.isBoss ? "Boss encounter" : "Bestiary entry"} · {entry.stats.hp} Health · {entry.xp} XP</p>
                   <div className="collection-card__footer"><span>Attack {entry.stats.physicalAttack} · Defense {entry.stats.physicalDefense}</span>{entry.isBoss && <strong>Boss</strong>}</div>
-                </article>
+                </Link>
               ))}
             </div>
           </section>
