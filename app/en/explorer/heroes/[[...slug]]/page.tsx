@@ -116,7 +116,6 @@ function EnglishAttributeGrid({ values, modifiers = false }: { values: Race["mod
   );
 }
 
-function raceName(slug: string) { return raceTranslations[slug]?.name ?? slug; }
 function className(slug: string) { return classTranslations[slug]?.name ?? slug; }
 function translatedAttribute(code: string) { return attributeCodeNames[code] ?? code; }
 function raceImage(slug: string) { return raceIllustrations[slug] ?? "/assets/illustrations/races-lineup.webp"; }
@@ -133,7 +132,7 @@ function heroItems(heroes: Hero[] = gameData.heroes): SearchItem[] {
       title: name,
       eyebrow: `${race.name} · ${characterClass.name}`,
       description: `${race.abilityName} + ${characterClass.abilityName}`,
-      meta: Object.entries(attributeNames).map(([key, label]) => `${shortAttributeNames[key]} ${hero.stats[key as keyof typeof hero.stats]}`).join(" · "),
+      meta: Object.keys(attributeNames).map((key) => `${shortAttributeNames[key]} ${hero.stats[key as keyof typeof hero.stats]}`).join(" · "),
       badge: `${hero.hp} Health`,
       image: heroImage(hero),
       imageAlt: `Fantasy illustration of ${name}`,
@@ -206,7 +205,7 @@ function RaceDetail({ race }: { race: Race }) {
     <div className="detail-hero"><div className="detail-hero__copy"><p className="kicker">Playable race</p><h1>{translation.name}</h1><p className="lead">{translation.tagline}</p><p>{translation.description}</p><div className="pill-row"><span>Strong: {translatedAttribute(race.strong)}</span><span>Weak: {translatedAttribute(race.weak)}</span></div></div><AssetSlot title={translation.name} eyebrow="Race illustration" src={raceImage(race.slug)} alt={`Fantasy illustration of the ${translation.name} race`} /></div>
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Attribute modifiers</h2><p>All other attributes remain unchanged. Class choice does not change which attribute is strong or weak.</p></div></div><EnglishAttributeGrid values={race.modifiers} modifiers /></section>
     <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability</span><h2>{translation.abilityName}</h2><p>{translation.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Suggested classes</span><h2>Good starting choices</h2><div className="link-chips">{race.recommendedClassSlugs.map((slug) => <Link href={`/en/explorer/heroes/classes/${slug}`} key={slug}>{className(slug)}</Link>)}</div><p className="fine-print">These are thematic suggestions based on the approved attributes, not class restrictions.</p></article></section>
-    <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six combinations</h2><p>Choose a class to open the hero's exact starting profile.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search ${translation.name.toLocaleLowerCase("en-US")} classes…`} locale="en" /></section>
+    <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six combinations</h2><p>Choose a class to open the exact starting profile for each hero.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search ${translation.name.toLocaleLowerCase("en-US")} classes…`} locale="en" /></section>
     <MoreMaterials />
   </>;
 }
