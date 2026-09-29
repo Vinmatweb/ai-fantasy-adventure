@@ -24,7 +24,7 @@ jobs:
           npm run validate:github-pages -- /tmp/github-pages-export
           mkdir -p english-static-output/assets czech-magic-static-output/assets
           cp -R /tmp/github-pages-export/en english-static-output/en
-          cp /tmp/github-pages-export/explorer/magie czech-magic-static-output/explorer/magie
+          cp -R /tmp/github-pages-export/explorer/magie czech-magic-static-output/explorer/magie
           cp -R /tmp/github-pages-export/assets/magic czech-magic-static-output/assets/magic
           cp /tmp/github-pages-export/assets/*.css english-static-output/assets/
           cp /tmp/github-pages-export/assets/*.css czech-magic-static-output/assets/
