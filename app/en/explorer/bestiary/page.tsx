@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteFooter } from "../../../components/SiteFooter";
-import { SiteHeader } from "../../../components/SiteHeader";
 import { gameData } from "../../../data";
 import { animalTranslations } from "../../translations/animals";
 import { fantasyHumanoidTranslations } from "../../translations/fantasy-humanoids";
@@ -37,8 +35,8 @@ const categoryFor = (slug: string) => categoryNames[slug] ?? slug;
 export default function EnglishBestiaryPage() {
   return (
     <>
-      <SiteHeader locale="en" />
-      <main lang="en" className="shell section">
+      
+      <main lang="en" >
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><strong>Bestiary</strong></nav>
         <header className="encyclopedia-header"><div><p className="kicker">Creatures and characters · v1.0</p><h1>Bestiary</h1><p>Browse the full roster of animals, people, fantasy folk, undead, and monsters. Each entry keeps the approved v1.0 challenge rating and Health value.</p></div><strong className="encyclopedia-header__count">{gameData.bestiary.length} entries</strong></header>
         <nav className="link-chips" aria-label="Bestiary categories">{gameData.bestiaryCategories.map((category) => <a href={`#${category.slug}`} key={category.slug}>{categoryFor(category.slug)} <small>{category.count}</small></a>)}</nav>
@@ -64,7 +62,7 @@ export default function EnglishBestiaryPage() {
         ))}
         <Link href="/en/explorer" className="button button--outline">Back to World Explorer</Link>
       </main>
-      <SiteFooter locale="en" />
+      
     </>
   );
 }

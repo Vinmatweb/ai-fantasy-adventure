@@ -26,6 +26,7 @@ import {
   type Race,
   type Spell,
 } from "../../data";
+import { czechToEnglishPath } from "../../language-routes";
 
 type PageProps = { params: Promise<{ slug?: string[] }> };
 
@@ -480,7 +481,7 @@ export default async function ExplorerPage({ params }: PageProps) {
   const path = currentPath(slug);
   return (
     <>
-      <SiteHeader />
+      <SiteHeader languageHref={czechToEnglishPath(path)} />
       <main className="explorer-page">
         <ExplorerShell currentPath={path}>{resolveContent(slug)}</ExplorerShell>
       </main>

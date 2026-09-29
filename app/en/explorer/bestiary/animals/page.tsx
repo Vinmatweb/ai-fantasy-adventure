@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CollectionSearch, type SearchItem } from "../../../../components/CollectionSearch";
-import { SiteFooter } from "../../../../components/SiteFooter";
-import { SiteHeader } from "../../../../components/SiteHeader";
 import { gameData } from "../../../../data";
 import { animalTranslations } from "../../../translations/animals";
 
@@ -28,5 +26,5 @@ const items: SearchItem[] = entries.map((entry) => {
 });
 
 export default function EnglishAnimalsPage() {
-  return <><SiteHeader locale="en" /><main lang="en" className="shell section"><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><Link href="/en/explorer/bestiary">Bestiary</Link><span>/</span><strong>Animals</strong></nav><header className="encyclopedia-header"><div><p className="kicker">Bestiary v1.0</p><h1>Animals</h1><p>Meet the creatures that roam forests, fields, caves, and rivers. Open an entry for its full stat block, equipment, and special ability.</p></div><strong className="encyclopedia-header__count">{entries.length} profiles</strong></header><CollectionSearch items={items} placeholder="Search animals…" locale="en" /></main><SiteFooter locale="en" /></>;
+  return <><main lang="en" ><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><Link href="/en/explorer/bestiary">Bestiary</Link><span>/</span><strong>Animals</strong></nav><header className="encyclopedia-header"><div><p className="kicker">Bestiary v1.0</p><h1>Animals</h1><p>Meet the creatures that roam forests, fields, caves, and rivers. Open an entry for its full stat block, equipment, and special ability.</p></div><strong className="encyclopedia-header__count">{entries.length} profiles</strong></header><CollectionSearch items={items} placeholder="Search animals…" locale="en" /></main></>;
 }

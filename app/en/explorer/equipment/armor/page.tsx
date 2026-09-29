@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CollectionSearch, type SearchItem } from "../../../../components/CollectionSearch";
-import { SiteFooter } from "../../../../components/SiteFooter";
-import { SiteHeader } from "../../../../components/SiteHeader";
 import { gameData } from "../../../../data";
 import { armorTranslations, translateArmorFields } from "../../../translations/equipment-armor";
 
@@ -32,5 +30,5 @@ const items: SearchItem[] = entries.map((item) => {
 });
 
 export default function EnglishArmorPage() {
-  return <><SiteHeader locale="en" /><main lang="en" className="shell section"><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><Link href="/en/explorer/equipment/melee-weapons">Equipment</Link><span>/</span><strong>Armor</strong></nav><nav className="link-chips" aria-label="Translated equipment categories"><Link href="/en/explorer/equipment/melee-weapons/">Melee Weapons <small>13</small></Link><Link href="/en/explorer/equipment/ranged-weapons/">Ranged Weapons <small>6</small></Link><Link href="/en/explorer/equipment/armor/">Armor <small>6</small></Link></nav><header className="encyclopedia-header"><div><p className="kicker">Equipment catalogue v1.0 · Category 3 of 8</p><h1>Armor</h1><p>Compare the approved armor types, Strength requirements, Defense bonuses, and prices.</p></div><strong className="encyclopedia-header__count">{entries.length} items</strong></header><CollectionSearch items={items} placeholder="Search armor…" locale="en" /></main><SiteFooter locale="en" /></>;
+  return <><main lang="en" ><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><Link href="/en/explorer/equipment/melee-weapons">Equipment</Link><span>/</span><strong>Armor</strong></nav><nav className="link-chips" aria-label="Translated equipment categories"><Link href="/en/explorer/equipment/melee-weapons/">Melee Weapons <small>13</small></Link><Link href="/en/explorer/equipment/ranged-weapons/">Ranged Weapons <small>6</small></Link><Link href="/en/explorer/equipment/armor/">Armor <small>6</small></Link></nav><header className="encyclopedia-header"><div><p className="kicker">Equipment catalogue v1.0 · Category 3 of 8</p><h1>Armor</h1><p>Compare the approved armor types, Strength requirements, Defense bonuses, and prices.</p></div><strong className="encyclopedia-header__count">{entries.length} items</strong></header><CollectionSearch items={items} placeholder="Search armor…" locale="en" /></main></>;
 }

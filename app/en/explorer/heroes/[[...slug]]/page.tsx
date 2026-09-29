@@ -4,8 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AssetSlot } from "../../../../components/AssetSlot";
 import { CollectionSearch, type SearchItem } from "../../../../components/CollectionSearch";
-import { SiteFooter } from "../../../../components/SiteFooter";
-import { SiteHeader } from "../../../../components/SiteHeader";
 import { gameData, type CharacterClass, type Hero, type Race } from "../../../../data";
 import {
   attributeCodeNames,
@@ -275,5 +273,5 @@ function resolveContent(segments: string[]) {
 
 export default async function EnglishHeroesPage({ params }: PageProps) {
   const { slug = [] } = await params;
-  return <><SiteHeader locale="en" /><main lang="en" className="shell section">{resolveContent(slug)}</main><SiteFooter locale="en" /></>;
+  return <><main lang="en" >{resolveContent(slug)}</main></>;
 }
