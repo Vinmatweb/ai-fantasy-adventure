@@ -2,79 +2,279 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AssetSlot } from "../../../../components/AssetSlot";
 import { CollectionSearch, type SearchItem } from "../../../../components/CollectionSearch";
 import { SiteFooter } from "../../../../components/SiteFooter";
 import { SiteHeader } from "../../../../components/SiteHeader";
-import { gameData, type Hero } from "../../../../data";
+import { gameData, type CharacterClass, type Hero, type Race } from "../../../../data";
+import {
+  attributeCodeNames,
+  attributeNames,
+  classTranslations,
+  raceTranslations,
+  shortAttributeNames,
+  startingEquipmentNames,
+  startingEquipmentNotes,
+} from "../../../translations/heroes";
 
 type PageProps = { params: Promise<{ slug?: string[] }> };
 
-const races: Record<string, { name: string; tagline: string; description: string; ability: string; effect: string; strong: string; weak: string }> = {
-  clovek: { name: "Human", tagline: "A hero who chooses their own path.", description: "Humans are adaptable adventurers with no predetermined strength. During character creation, the player chooses one strong and one different weak attribute.", ability: "Adaptability", effect: "Once per adventure, after a failed roll of their own, the human may try again. Vaelor creates a new random permutation, the player chooses a number again, and the better result is used.", strong: "player's choice", weak: "player's choice" },
-  elf: { name: "Elf", tagline: "A sharp mind, keen eyes, and a feel for magic.", description: "Elves excel in Intelligence and awareness. They can spot distant visible details, but lack brute strength.", ability: "Keen Sight", effect: "Automatically notices a distant visible detail, tracks, or movement unless it is magically or otherwise hidden.", strong: "Intelligence", weak: "Strength" },
-  trpaslik: { name: "Dwarf", tagline: "Steady as stone and at home underground.", description: "Dwarves rely on Strength, resilience, and a deep knowledge of stone. They are less agile but excel at direct, practical solutions.", ability: "Stone Sense", effect: "In relevant stone or underground surroundings, automatically detects cavities, secret passages, unstable rock, good ore, or unusual properties of stone.", strong: "Strength", weak: "Agility" },
-  ork: { name: "Orc", tagline: "Mighty strength guided by a courageous heart.", description: "Orcs are the strongest of the core races. When their Health is low, their close-range attacks grow stronger, though magic is harder for them.", ability: "Battle Fury", effect: "While below half of maximum Health, gains +1 to the result of every close-range attack.", strong: "Strength", weak: "Intelligence" },
-  pulcik: { name: "Halfling", tagline: "Small in stature, lucky, and quick with their hands.", description: "Halflings rely on Agility and remarkable Luck. They are not strong, but once per adventure can turn a failure into a narrow success.", ability: "Lucky Break", effect: "Once per adventure, after their own failed virtual roll, changes the result to a narrow success. The roll is not repeated; this is the lowest success needed, with no extra benefit.", strong: "Luck", weak: "Strength" },
-  vila: { name: "Fairy", tagline: "A tiny magical being with healing dust and light wings.", description: "Fairies are small winged beings gifted with magic, agility, and luck. Their fairy dust strengthens every healing effect, but their small size means very low Strength.", ability: "Fairy Dust", effect: "Every healing effect performed by a fairy restores 1 additional Health.", strong: "Intelligence", weak: "Strength" },
+const raceIllustrations: Record<string, string> = {
+  clovek: "/assets/heroes/clovek-hranicar.webp",
+  elf: "/assets/heroes/elf-kouzelnik.webp",
+  trpaslik: "/assets/heroes/trpaslik-bojovnik.webp",
+  ork: "/assets/heroes/ork-lecitel.webp",
+  pulcik: "/assets/heroes/pulcik-zlodej.webp",
+  vila: "/assets/heroes/vila-lecitel.webp",
 };
 
-const classes: Record<string, { name: string; tagline: string; description: string; playStyle: string; ability: string; effect: string }> = {
-  bojovnik: { name: "Warrior", tagline: "Holds the front line and protects the party.", description: "Warriors face danger with strength, courage, and reliable gear. Once per combat, a warrior can take an attack meant for a nearby ally.", playStyle: "Direct combat, protecting allies, and a wide choice of weapons and armor.", ability: "Protect", effect: "Once per combat, may take an attack aimed at a nearby ally. The attack is resolved against the warrior's defense instead." },
-  hranicar: { name: "Ranger", tagline: "A tracker, archer, and guide through the wilds.", description: "Rangers combine Strength and Agility. They can automatically determine the direction of usable tracks and excel at exploration and ranged attacks.", playStyle: "Exploration, ranged combat, wilderness travel, and smart preparation.", ability: "Tracker", effect: "Automatically recognizes which way a person or animal being tracked went, if usable tracks remain." },
-  kouzelnik: { name: "Wizard", tagline: "Commands the widest range of magic.", description: "Wizards begin with high Intelligence, the strongest magic modifiers, and five known spells. They can always sense magic, but may not know its exact purpose.", playStyle: "Spells, knowledge, puzzles, and powerful magical attacks.", ability: "Magic Sense", effect: "Automatically recognizes that an item, place, or creature is magical. This does not reveal the magic's exact type, purpose, trigger, or danger." },
-  zlodej: { name: "Rogue", tagline: "Quiet, agile, and ready for locks and traps.", description: "Rogues excel in Agility and Luck. Ordinary sneaking succeeds automatically, and their tools open paths others cannot.", playStyle: "Stealth, locks, traps, precise attacks, and clever solutions.", ability: "Soft Steps", effect: "For ordinary sneaking, Vaelor assumes success. A roll is needed only for an exceptional obstacle; this cannot make hiding possible where it is objectively impossible." },
-  lecitel: { name: "Healer", tagline: "Keeps the party standing and drives back the dark.", description: "Healers combine Intelligence and Charisma, begin with four spells, and have the strongest healing modifier. They can use first aid outside their magic limit.", playStyle: "Healing, protection, cleansing, support, and calm leadership.", ability: "First Aid", effect: "Once per combat, restores ⌈Intelligence/2⌉ Health to themself or one ally, up to the maximum. This is not a healing spell and does not use the healing magic limit." },
-  bard: { name: "Bard", tagline: "Stories, music, and the right words at the right moment.", description: "Bards rely on Charisma and Agility. Once in an important scene or combat, they can improve their own or an ally's roll bonus by one step.", playStyle: "Social scenes, party support, music, and versatility.", ability: "Inspiration", effect: "Once during a combat or important scene, after a virtual roll is revealed, may raise their own or an ally's roll bonus by one step, up to that category's maximum. It takes no main action and cannot be used on an enemy." },
-};
+function routePath(segments: string[]) {
+  return `/en/explorer/heroes${segments.length ? `/${segments.join("/")}` : ""}`;
+}
 
-const attributeNames = ["Strength", "Agility", "Intelligence", "Charisma", "Luck"] as const;
-const attributeKeys = ["strength", "agility", "intelligence", "charisma", "luck"] as const;
-const raceFor = (hero: Hero) => races[hero.raceSlug]!;
-const classFor = (hero: Hero) => classes[hero.classSlug]!;
-const heroName = (hero: Hero) => `${raceFor(hero).name} – ${classFor(hero).name}`;
+function czechPath(segments: string[]) {
+  if (!segments.length) return "/explorer/hrdinove";
+  if (segments[0] === "races") return `/explorer/hrdinove/rasy${segments[1] ? `/${segments[1]}` : ""}`;
+  if (segments[0] === "classes") return `/explorer/hrdinove/povolani${segments[1] ? `/${segments[1]}` : ""}`;
+  return `/explorer/hrdinove/${segments[0]}`;
+}
 
-export function generateStaticParams() {
-  return [{ slug: [] }, ...gameData.heroes.map((hero) => ({ slug: [hero.slug] }))];
+function pageMetadata(segments: string[]): Metadata {
+  let title = "Starting Heroes";
+  let description = "Browse all 36 starting heroes in AI Fantasy Adventure.";
+  if (segments[0] === "races") {
+    title = segments[1] ? raceTranslations[segments[1]]?.name ?? "Race" : "Playable Races";
+    description = segments[1]
+      ? `${raceTranslations[segments[1]]?.name ?? "Race"}: attributes, racial ability, and six starting hero combinations.`
+      : "Meet the six playable races, their attribute modifiers, and racial abilities.";
+  } else if (segments[0] === "classes") {
+    title = segments[1] ? classTranslations[segments[1]]?.name ?? "Class" : "Character Classes";
+    description = segments[1]
+      ? `${classTranslations[segments[1]]?.name ?? "Class"}: class modifiers, ability, starting equipment, and six hero combinations.`
+      : "Explore the six character classes, their attribute bonuses, abilities, and starting equipment.";
+  } else if (segments[0]) {
+    const hero = gameData.heroes.find((item) => item.slug === segments[0]);
+    if (hero) {
+      const race = raceTranslations[hero.raceSlug];
+      const characterClass = classTranslations[hero.classSlug];
+      title = `${race.name} – ${characterClass.name}`;
+      description = `${title}: approved starting attributes, Health, abilities, and equipment.`;
+    }
+  }
+  const path = routePath(segments);
+  return {
+    title,
+    description,
+    alternates: { canonical: path, languages: { "cs-CZ": czechPath(segments), en: path } },
+    openGraph: { title, description, locale: "en_US", type: "website", images: ["/og-image.jpg"] },
+  };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug = [] } = await params;
-  if (!slug.length) return { title: "Starting Heroes", description: "Browse all 36 starting heroes in AI Fantasy Adventure." };
-  const hero = gameData.heroes.find((item) => item.slug === slug[0]);
-  return hero ? { title: heroName(hero), description: `${heroName(hero)}: starting attributes, Health, and abilities.` } : {};
+  return pageMetadata(slug);
 }
 
-function HeroItems(): SearchItem[] {
-  return gameData.heroes.map((hero) => ({
-    href: `/en/explorer/heroes/${hero.slug}`,
-    title: heroName(hero),
-    eyebrow: `${raceFor(hero).name} · ${classFor(hero).name}`,
-    description: `${raceFor(hero).ability} + ${classFor(hero).ability}`,
-    meta: attributeKeys.map((key, index) => `${attributeNames[index]} ${hero.stats[key]}`).join(" · "),
-    badge: `${hero.hp} Health`,
-    image: `/assets/heroes/${hero.slug}.webp`,
-    imageAlt: `Fantasy illustration of a ${heroName(hero)}`,
-  }));
+export function generateStaticParams() {
+  return [
+    { slug: [] },
+    { slug: ["races"] },
+    ...gameData.races.map((race) => ({ slug: ["races", race.slug] })),
+    { slug: ["classes"] },
+    ...gameData.classes.map((characterClass) => ({ slug: ["classes", characterClass.slug] })),
+    ...gameData.heroes.map((hero) => ({ slug: [hero.slug] })),
+  ];
+}
+
+function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
+  return (
+    <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link>
+      {items.map((item, index) => <span className="breadcrumbs__item" key={`${item.label}-${index}`}><span>/</span>{item.href ? <Link href={item.href}>{item.label}</Link> : <strong>{item.label}</strong>}</span>)}
+    </nav>
+  );
+}
+
+function HeroSectionNav({ active }: { active: "heroes" | "races" | "classes" }) {
+  const links = [
+    ["heroes", "All 36 heroes", "/en/explorer/heroes"],
+    ["races", "Races", "/en/explorer/heroes/races"],
+    ["classes", "Classes", "/en/explorer/heroes/classes"],
+  ] as const;
+  return <nav className="link-chips" aria-label="Heroes section">{links.map(([key, label, href]) => key === active ? <strong aria-current="page" key={key}>{label}</strong> : <Link href={href} key={key}>{label}</Link>)}</nav>;
+}
+
+function EnglishAttributeGrid({ values, modifiers = false }: { values: Race["modifiers"]; modifiers?: boolean }) {
+  return (
+    <div className="attribute-grid" aria-label="Attributes">
+      {Object.entries(attributeNames).map(([key, name]) => {
+        const value = values[key as keyof typeof values];
+        const shown = modifiers && value > 0 ? `+${value}` : String(value);
+        return <div className="attribute" key={key}><span className="attribute__short">{shortAttributeNames[key]}</span><strong>{shown}</strong><span>{name}</span></div>;
+      })}
+    </div>
+  );
+}
+
+function raceName(slug: string) { return raceTranslations[slug]?.name ?? slug; }
+function className(slug: string) { return classTranslations[slug]?.name ?? slug; }
+function translatedAttribute(code: string) { return attributeCodeNames[code] ?? code; }
+function raceImage(slug: string) { return raceIllustrations[slug] ?? "/assets/illustrations/races-lineup.webp"; }
+function heroImage(hero: Hero) { return `/assets/heroes/${hero.slug}.webp`; }
+function translatedStartingItem(item: string) { return startingEquipmentNames[item] ?? item; }
+
+function heroItems(heroes: Hero[] = gameData.heroes): SearchItem[] {
+  return heroes.map((hero) => {
+    const race = raceTranslations[hero.raceSlug];
+    const characterClass = classTranslations[hero.classSlug];
+    const name = `${race.name} – ${characterClass.name}`;
+    return {
+      href: `/en/explorer/heroes/${hero.slug}`,
+      title: name,
+      eyebrow: `${race.name} · ${characterClass.name}`,
+      description: `${race.abilityName} + ${characterClass.abilityName}`,
+      meta: Object.entries(attributeNames).map(([key, label]) => `${shortAttributeNames[key]} ${hero.stats[key as keyof typeof hero.stats]}`).join(" · "),
+      badge: `${hero.hp} Health`,
+      image: heroImage(hero),
+      imageAlt: `Fantasy illustration of ${name}`,
+    };
+  });
+}
+
+function raceItems(): SearchItem[] {
+  return gameData.races.map((race) => {
+    const translation = raceTranslations[race.slug];
+    return {
+      href: `/en/explorer/heroes/races/${race.slug}`,
+      title: translation.name,
+      eyebrow: `Strong: ${translatedAttribute(race.strong)} · Weak: ${translatedAttribute(race.weak)}`,
+      description: translation.tagline,
+      meta: translation.abilityName,
+      badge: `${gameData.classes.length} classes`,
+      image: raceImage(race.slug),
+      imageAlt: `Fantasy illustration of the ${translation.name} race`,
+    };
+  });
+}
+
+function classItems(): SearchItem[] {
+  return gameData.classes.map((characterClass) => {
+    const translation = classTranslations[characterClass.slug];
+    return {
+      href: `/en/explorer/heroes/classes/${characterClass.slug}`,
+      title: translation.name,
+      eyebrow: translation.abilityName,
+      description: translation.tagline,
+      meta: translation.playStyle,
+      badge: `${gameData.races.length} races`,
+      image: `/assets/heroes/clovek-${characterClass.slug}.webp`,
+      imageAlt: `Fantasy illustration of the ${translation.name} class`,
+    };
+  });
+}
+
+function MoreMaterials() {
+  return <div className="future-assets" aria-label="More materials"><small>Coming soon</small><span>Coloring page</span><span>Printable character card</span><span>More activities</span></div>;
+}
+
+function HeroesOverview() {
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes" }]} />
+    <HeroSectionNav active="heroes" />
+    <header className="encyclopedia-header"><div><p className="kicker">Six races × six classes</p><h1>36 starting heroes</h1><p>Every race and class combination has its own approved starting attributes, Health, abilities, and equipment.</p></div><strong className="encyclopedia-header__count">{gameData.heroes.length} heroes</strong></header>
+    <div className="editorial-image"><img src="/assets/illustrations/classes-lineup.webp" width="1672" height="941" alt="The six starting classes: Warrior, Ranger, Wizard, Rogue, Healer, and Bard" /></div>
+    <CollectionSearch items={heroItems()} placeholder="Search heroes, races, or classes…" locale="en" />
+  </>;
+}
+
+function RacesOverview() {
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races" }]} />
+    <HeroSectionNav active="races" />
+    <header className="encyclopedia-header"><div><p className="kicker">Heroes</p><h1>Six playable races</h1><p>Each race has approved attribute modifiers, one strong and one weak attribute, and a racial ability.</p></div><strong className="encyclopedia-header__count">{gameData.races.length} races</strong></header>
+    <div className="editorial-image"><img src="/assets/illustrations/races-lineup.webp" width="1536" height="1024" alt="The six playable races: Human, Elf, Dwarf, Orc, Halfling, and Fairy" /></div>
+    <CollectionSearch items={raceItems()} placeholder="Search races…" locale="en" />
+  </>;
+}
+
+function RaceDetail({ race }: { race: Race }) {
+  const translation = raceTranslations[race.slug];
+  const heroes = gameData.heroes.filter((hero) => hero.raceSlug === race.slug);
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Races", href: "/en/explorer/heroes/races" }, { label: translation.name }]} />
+    <HeroSectionNav active="races" />
+    <div className="detail-hero"><div className="detail-hero__copy"><p className="kicker">Playable race</p><h1>{translation.name}</h1><p className="lead">{translation.tagline}</p><p>{translation.description}</p><div className="pill-row"><span>Strong: {translatedAttribute(race.strong)}</span><span>Weak: {translatedAttribute(race.weak)}</span></div></div><AssetSlot title={translation.name} eyebrow="Race illustration" src={raceImage(race.slug)} alt={`Fantasy illustration of the ${translation.name} race`} /></div>
+    <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Attribute modifiers</h2><p>All other attributes remain unchanged. Class choice does not change which attribute is strong or weak.</p></div></div><EnglishAttributeGrid values={race.modifiers} modifiers /></section>
+    <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability</span><h2>{translation.abilityName}</h2><p>{translation.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Suggested classes</span><h2>Good starting choices</h2><div className="link-chips">{race.recommendedClassSlugs.map((slug) => <Link href={`/en/explorer/heroes/classes/${slug}`} key={slug}>{className(slug)}</Link>)}</div><p className="fine-print">These are thematic suggestions based on the approved attributes, not class restrictions.</p></article></section>
+    <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six combinations</h2><p>Choose a class to open the hero's exact starting profile.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search ${translation.name.toLocaleLowerCase("en-US")} classes…`} locale="en" /></section>
+    <MoreMaterials />
+  </>;
+}
+
+function ClassesOverview() {
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes" }]} />
+    <HeroSectionNav active="classes" />
+    <header className="encyclopedia-header"><div><p className="kicker">Heroes</p><h1>Six character classes</h1><p>Each class adds exactly +3 attribute points, a class ability, and an approved starting loadout.</p></div><strong className="encyclopedia-header__count">{gameData.classes.length} classes</strong></header>
+    <div className="editorial-image"><img src="/assets/illustrations/classes-lineup.webp" width="1672" height="941" alt="The six character classes: Warrior, Ranger, Wizard, Rogue, Healer, and Bard" /></div>
+    <CollectionSearch items={classItems()} placeholder="Search classes…" locale="en" />
+  </>;
+}
+
+function ClassDetail({ characterClass }: { characterClass: CharacterClass }) {
+  const translation = classTranslations[characterClass.slug];
+  const heroes = gameData.heroes.filter((hero) => hero.classSlug === characterClass.slug);
+  const equipment = characterClass.startingEquipment;
+  const note = startingEquipmentNotes[characterClass.slug];
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: "Classes", href: "/en/explorer/heroes/classes" }, { label: translation.name }]} />
+    <HeroSectionNav active="classes" />
+    <div className="detail-hero"><div className="detail-hero__copy"><p className="kicker">Character class</p><h1>{translation.name}</h1><p className="lead">{translation.tagline}</p><p>{translation.description}</p><div className="pill-row"><span>{translation.playStyle}</span></div></div><AssetSlot title={translation.name} eyebrow="Class illustration" src={`/assets/heroes/clovek-${characterClass.slug}.webp`} alt={`Fantasy illustration of the ${translation.name} class`} /></div>
+    <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Class bonuses</h2><p>Class bonuses change attribute values, not the strong or weak attribute category.</p></div></div><EnglishAttributeGrid values={characterClass.modifiers} modifiers /></section>
+    <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Class ability</span><h2>{translation.abilityName}</h2><p>{translation.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Starting loadout</span><h2>Active equipment</h2><ul>{equipment.active.map((item) => <li key={item}>{translatedStartingItem(item)}</li>)}</ul><h3>In the inventory</h3><p>{equipment.inventory.map(translatedStartingItem).join(" · ")}</p>{note && <p className="fine-print">{note}</p>}</article></section>
+    <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six races</h2><p>Open any race and class combination to see its exact starting profile.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search races for ${translation.name.toLocaleLowerCase("en-US")}…`} locale="en" /></section>
+    <MoreMaterials />
+  </>;
 }
 
 function HeroDetail({ hero }: { hero: Hero }) {
-  const race = raceFor(hero);
-  const cls = classFor(hero);
-  return (
-    <>
-      <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><Link href="/en/explorer/heroes">Heroes</Link><span>/</span><strong>{heroName(hero)}</strong></nav>
-      <header className="encyclopedia-header"><div><p className="kicker">Starting hero · {race.name} {cls.name}</p><h1>{heroName(hero)}</h1><p>{race.tagline} {cls.tagline}</p></div><strong className="encyclopedia-header__count">{hero.hp} Health</strong></header>
-      <div className="detail-hero"><div className="detail-hero__copy"><p className="lead">{race.description} {cls.description}</p><div className="pill-row"><span>Strong: {race.strong}</span><span>Weak: {race.weak}</span></div></div><div className="detail-hero__image"><img src={`/assets/heroes/${hero.slug}.webp`} width="768" height="768" alt={`Fantasy illustration of ${heroName(hero)}`} /></div></div>
-      <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Starting attributes</h2><p>These are the approved level-one values for this race and class combination.</p></div></div><div className="attribute-grid" aria-label="Starting attributes">{attributeKeys.map((key, index) => <div className="attribute" key={key}><span className="attribute__short">{attributeNames[index].slice(0, 3)}</span><strong>{hero.stats[key]}</strong><span>{attributeNames[index]}</span></div>)}</div></section>
-      <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability · {race.name}</span><h2>{race.ability}</h2><p>{race.effect}</p></article><article className="info-panel"><span className="panel-kicker">Class ability · {cls.name}</span><h2>{cls.ability}</h2><p>{cls.effect}</p></article></section>
-      <Link href="/en/explorer/heroes" className="button button--outline">Back to all starting heroes</Link>
-    </>
-  );
+  const race = raceTranslations[hero.raceSlug];
+  const characterClass = classTranslations[hero.classSlug];
+  const loadout = hero.startingEquipment;
+  const note = startingEquipmentNotes[hero.classSlug];
+  return <>
+    <Breadcrumbs items={[{ label: "Heroes", href: "/en/explorer/heroes" }, { label: `${race.name} – ${characterClass.name}` }]} />
+    <HeroSectionNav active="heroes" />
+    <header className="encyclopedia-header"><div><p className="kicker">Starting hero · Level 1</p><h1>{race.name} – {characterClass.name}</h1><p className="lead">{race.tagline} {characterClass.tagline}</p><p>{race.description} {characterClass.description}</p></div><strong className="encyclopedia-header__count">{hero.hp} Health</strong></header>
+    <div className="detail-hero"><div className="detail-hero__copy"><div className="pill-row"><Link href={`/en/explorer/heroes/races/${hero.raceSlug}`}>{race.name}</Link><Link href={`/en/explorer/heroes/classes/${hero.classSlug}`}>{characterClass.name}</Link><span>Strong: {translatedAttribute(hero.strong)}</span><span>Weak: {translatedAttribute(hero.weak)}</span></div></div><AssetSlot title={`${race.name} – ${characterClass.name}`} eyebrow="Level 1 hero illustration" src={heroImage(hero)} alt={`Fantasy illustration of a ${race.name} ${characterClass.name}`} /></div>
+    <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Starting attributes</h2><p>Calculated from the base value of 5, plus the race and class modifiers.</p></div></div><EnglishAttributeGrid values={hero.stats} /><div className="derived-stats"><div><span>Strong attribute</span><strong>{translatedAttribute(hero.strong)}</strong></div><div><span>Weak attribute</span><strong>{translatedAttribute(hero.weak)}</strong></div><div><span>Maximum Health</span><strong>{hero.hp}</strong></div></div></section>
+    <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability · {race.name}</span><h2>{race.abilityName}</h2><p>{race.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Class ability · {characterClass.name}</span><h2>{characterClass.abilityName}</h2><p>{characterClass.abilityEffect}</p></article></section>
+    <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Starting equipment</h2><p>Approved starting equipment from the v1.0 catalogue.</p></div></div><div className="loadout-grid"><article><span>Active</span>{loadout.active.map((item) => <strong key={item}>{translatedStartingItem(item)}</strong>)}</article><article><span>Inventory</span>{loadout.inventory.map((item) => <strong key={item}>{translatedStartingItem(item)}</strong>)}</article></div>{note && <p className="fine-print">{note}</p>}</section>
+    <MoreMaterials />
+  </>;
+}
+
+function resolveContent(segments: string[]) {
+  if (segments.length === 0) return <HeroesOverview />;
+  if (segments[0] === "races") {
+    if (segments.length === 1) return <RacesOverview />;
+    const race = gameData.races.find((item) => item.slug === segments[1]);
+    if (segments.length !== 2 || !race || !raceTranslations[race.slug]) notFound();
+    return <RaceDetail race={race} />;
+  }
+  if (segments[0] === "classes") {
+    if (segments.length === 1) return <ClassesOverview />;
+    const characterClass = gameData.classes.find((item) => item.slug === segments[1]);
+    if (segments.length !== 2 || !characterClass || !classTranslations[characterClass.slug]) notFound();
+    return <ClassDetail characterClass={characterClass} />;
+  }
+  if (segments.length !== 1) notFound();
+  const hero = gameData.heroes.find((item) => item.slug === segments[0]);
+  if (!hero) notFound();
+  return <HeroDetail hero={hero} />;
 }
 
 export default async function EnglishHeroesPage({ params }: PageProps) {
   const { slug = [] } = await params;
-  const hero = slug.length ? gameData.heroes.find((item) => item.slug === slug[0]) : undefined;
-  if (slug.length > 1 || (slug.length === 1 && !hero)) notFound();
-  return <><SiteHeader locale="en" /><main lang="en" className="shell section">{hero ? <HeroDetail hero={hero} /> : <><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/en">Home</Link><span>/</span><Link href="/en/explorer">World Explorer</Link><span>/</span><strong>Heroes</strong></nav><header className="encyclopedia-header"><div><p className="kicker">Six races × six classes</p><h1>36 starting heroes</h1><p>Each combination has its own approved starting attributes, Health, and two special abilities. Search by race or class, then open a hero to see the full starting profile.</p></div><strong className="encyclopedia-header__count">36 heroes</strong></header><div className="editorial-image"><img src="/assets/illustrations/classes-lineup.webp" width="1672" height="941" alt="The six starting classes: Warrior, Ranger, Wizard, Rogue, Healer, and Bard" /></div><CollectionSearch items={HeroItems()} placeholder="Search heroes, races, or classes…" locale="en" /></>}</main><SiteFooter locale="en" /></>;
+  return <><SiteHeader locale="en" /><main lang="en" className="shell section">{resolveContent(slug)}</main><SiteFooter locale="en" /></>;
 }
