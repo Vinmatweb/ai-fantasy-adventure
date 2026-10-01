@@ -170,10 +170,6 @@ function classItems(): SearchItem[] {
   });
 }
 
-function MoreMaterials() {
-  return <div className="future-assets" aria-label="More materials"><small>Coming soon</small><span>Coloring page</span><span>Printable character card</span><span>More activities</span></div>;
-}
-
 function HeroesOverview() {
   return <>
     <Breadcrumbs locale="en" items={[{ label: "Heroes" }]} />
@@ -204,7 +200,6 @@ function RaceDetail({ race }: { race: Race }) {
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Attribute modifiers</h2><p>All other attributes remain unchanged. Class choice does not change which attribute is strong or weak.</p></div></div><EnglishAttributeGrid values={race.modifiers} modifiers /></section>
     <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability</span><h2>{translation.abilityName}</h2><p>{translation.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Suggested classes</span><h2>Good starting choices</h2><div className="link-chips">{race.recommendedClassSlugs.map((slug) => <Link href={`/en/explorer/heroes/classes/${slug}`} key={slug}>{className(slug)}</Link>)}</div><p className="fine-print">These are thematic suggestions based on the approved attributes, not class restrictions.</p></article></section>
     <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six combinations</h2><p>Choose a class to open the exact starting profile for each hero.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search ${translation.name.toLocaleLowerCase("en-US")} classes…`} locale="en" /></section>
-    <MoreMaterials />
   </>;
 }
 
@@ -230,7 +225,6 @@ function ClassDetail({ characterClass }: { characterClass: CharacterClass }) {
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Class bonuses</h2><p>Class bonuses change attribute values, not the strong or weak attribute category.</p></div></div><EnglishAttributeGrid values={characterClass.modifiers} modifiers /></section>
     <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Class ability</span><h2>{translation.abilityName}</h2><p>{translation.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Starting loadout</span><h2>Active equipment</h2><ul>{equipment.active.map((item) => <li key={item}>{translatedStartingItem(item)}</li>)}</ul><h3>In the inventory</h3><p>{equipment.inventory.map(translatedStartingItem).join(" · ")}</p>{note && <p className="fine-print">{note}</p>}</article></section>
     <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Six races</h2><p>Open any race and class combination to see its exact starting profile.</p></div></div><CollectionSearch items={heroItems(heroes)} placeholder={`Search races for ${translation.name.toLocaleLowerCase("en-US")}…`} locale="en" /></section>
-    <MoreMaterials />
   </>;
 }
 
@@ -247,7 +241,6 @@ function HeroDetail({ hero }: { hero: Hero }) {
     <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Starting attributes</h2><p>Calculated from the base value of 5, plus the race and class modifiers.</p></div></div><EnglishAttributeGrid values={hero.stats} /><div className="derived-stats"><div><span>Strong attribute</span><strong>{translatedAttribute(hero.strong)}</strong></div><div><span>Weak attribute</span><strong>{translatedAttribute(hero.weak)}</strong></div><div><span>Maximum Health</span><strong>{hero.hp}</strong></div></div></section>
     <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Racial ability · {race.name}</span><h2>{race.abilityName}</h2><p>{race.abilityEffect}</p></article><article className="info-panel"><span className="panel-kicker">Class ability · {characterClass.name}</span><h2>{characterClass.abilityName}</h2><p>{characterClass.abilityEffect}</p></article></section>
     <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Starting equipment</h2><p>Approved starting equipment from the v1.0 catalogue.</p></div></div><div className="loadout-grid"><article><span>Active</span>{loadout.active.map((item) => <strong key={item}>{translatedStartingItem(item)}</strong>)}</article><article><span>Inventory</span>{loadout.inventory.map((item) => <strong key={item}>{translatedStartingItem(item)}</strong>)}</article></div>{note && <p className="fine-print">{note}</p>}</section>
-    <MoreMaterials />
   </>;
 }
 
