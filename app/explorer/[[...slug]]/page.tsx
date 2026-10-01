@@ -111,14 +111,6 @@ function EncyclopediaHeader({ eyebrow, title, description, count }: { eyebrow: s
   );
 }
 
-function FutureAssetLinks({ label = "Další materiály" }: { label?: string }) {
-  return (
-    <div className="future-assets" aria-label={label}>
-      <small>Do budoucna</small><span>Omalovánka</span><span>Karta k vytištění</span><span>Další aktivita</span>
-    </div>
-  );
-}
-
 function ExplorerOverview() {
   const portals = [
     ["Hrdinové", `${gameData.meta.counts.races} ras, ${gameData.meta.counts.classes} povolání a ${gameData.meta.counts.heroes} přesných kombinací`, gameData.meta.counts.heroes, "/explorer/hrdinove", "♜"],
@@ -128,7 +120,7 @@ function ExplorerOverview() {
   ] as const;
   return (
     <>
-      <EncyclopediaHeader eyebrow="Encyklopedie v1.0" title="Explorer světa" description="Všechna schválená herní data na jednom místě — propojená, vyhledatelná a připravená na budoucí ilustrace, omalovánky a karty." count={`${gameData.meta.counts.heroes + gameData.meta.counts.bestiary + gameData.meta.counts.equipment + gameData.meta.counts.spells} položek`} />
+      <EncyclopediaHeader eyebrow="Encyklopedie v1.0" title="Explorer světa" description="Všechna schválená herní data na jednom místě — propojená, vyhledatelná a připravená pro rychlé použití během hry." count={`${gameData.meta.counts.heroes + gameData.meta.counts.bestiary + gameData.meta.counts.equipment + gameData.meta.counts.spells} položek`} />
       <div className="explorer-portal-grid">
         {portals.map(([title, body, count, href, symbol]) => (
           <Link href={href} className="explorer-portal" key={href}>
@@ -206,7 +198,6 @@ function RaceDetail({ race }: { race: Race }) {
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Úpravy vlastností</h2><p>Všechny ostatní vlastnosti jsou normální; povolání kategorii silná/slabá nemění.</p></div></div><AttributeGrid values={race.modifiers} modifiers /></section>
       <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Rasová schopnost</span><h2>{race.ability.name}</h2><p>{race.ability.effect}</p></article><article className="info-panel"><span className="panel-kicker">Tematicky vhodná povolání</span><h2>Dobré výchozí směry</h2><div className="link-chips">{race.recommendedClassSlugs.map((slug) => { const item = findClass(slug)!; return <Link href={`/explorer/hrdinove/povolani/${slug}`} key={slug}>{item.name}</Link>; })}</div><p className="fine-print">Jde o tematický tip podle schválených vlastností, nikoli o omezení pravidel.</p></article></section>
       <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Šest kombinací</h2><p>Vyber povolání a otevři přesné počáteční statistiky hrdiny.</p></div></div><CollectionSearch items={HeroItems(heroes)} placeholder={`Hledat ${race.name.toLocaleLowerCase("cs")} povolání…`} /></section>
-      <FutureAssetLinks />
     </>
   );
 }
@@ -244,7 +235,6 @@ function ClassDetail({ item }: { item: CharacterClass }) {
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Bonusy povolání</h2><p>Povolání mění hodnoty, nikoli kategorii silné a slabé vlastnosti.</p></div></div><AttributeGrid values={item.modifiers} modifiers /></section>
       <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Schopnost povolání</span><h2>{item.ability.name}</h2><p>{item.ability.effect}</p></article><article className="info-panel"><span className="panel-kicker">Počáteční sestava</span><h2>Aktivní vybavení</h2><ul>{item.startingEquipment.active.map((value) => <li key={value}>{value}</li>)}</ul><h3>V inventáři</h3><p>{item.startingEquipment.inventory.join(" • ")}</p>{item.startingEquipment.note && item.startingEquipment.note !== "—" && <p className="fine-print">{item.startingEquipment.note}</p>}</article></section>
       <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Šest ras</h2><p>Otevři přesné počáteční statistiky každé kombinace.</p></div></div><CollectionSearch items={HeroItems(heroes)} placeholder={`Hledat rasu pro ${item.name.toLocaleLowerCase("cs")}…`} /></section>
-      <FutureAssetLinks />
     </>
   );
 }
@@ -262,7 +252,6 @@ function HeroDetail({ hero }: { hero: Hero }) {
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Počáteční vlastnosti</h2><p>Počítáno přesně jako základ 5 + rasa + povolání.</p></div></div><AttributeGrid values={hero.stats} /><div className="derived-stats"><div><span>Silná vlastnost</span><strong>{hero.strong}</strong></div><div><span>Slabá vlastnost</span><strong>{hero.weak}</strong></div><div><span>Maximální Životy</span><strong>{hero.hp} Ž</strong></div></div></section>
       <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Rasa • {race.name}</span><h2>{hero.raceAbility.name}</h2><p>{hero.raceAbility.effect}</p></article><article className="info-panel"><span className="panel-kicker">Povolání • {cls.name}</span><h2>{hero.classAbility.name}</h2><p>{hero.classAbility.effect}</p></article></section>
       <section className="detail-section"><div className="detail-section__heading"><span>02</span><div><h2>Počáteční vybavení</h2><p>Doporučená sestava z finálního Katalogu vybavení v1.0.</p></div></div><div className="loadout-grid"><article><span>Aktivní</span>{hero.startingEquipment.active.map((value) => <strong key={value}>{value}</strong>)}</article><article><span>Inventář</span>{hero.startingEquipment.inventory.map((value) => <strong key={value}>{value}</strong>)}</article></div></section>
-      <FutureAssetLinks />
     </>
   );
 }
@@ -311,7 +300,6 @@ function BestiaryDetail({ entry }: { entry: BestiaryEntry }) {
       <section className="detail-grid-two"><article className="info-panel"><span className="panel-kicker">Zvláštní schopnost</span><h2>{entry.ability.name}</h2><p>{entry.ability.effect}</p></article><article className="info-panel"><span className="panel-kicker">Doporučený počet</span><h2>Podle velikosti družiny</h2><div className="group-counts"><span>2 hráči <strong>{entry.recommendedGroups["2"] ?? "—"}</strong></span><span>3 hráči <strong>{entry.recommendedGroups["3"] ?? "—"}</strong></span><span>4 hráči <strong>{entry.recommendedGroups["4"] ?? "—"}</strong></span></div></article></section>
       {entry.defenseSpecialization && <section className="notice"><strong>{entry.defenseSpecialization.name}</strong><p>{entry.defenseSpecialization.effect}</p><span>{entry.defenseSpecialization.resistanceType}</span>{entry.defenseSpecialization.weakness && entry.defenseSpecialization.weakness !== "—" && <p><b>Chytré řešení:</b> {entry.defenseSpecialization.weakness}</p>}</section>}
       {entry.boss && <section className="boss-panel"><div><span className="panel-kicker">Základní boss</span><h2>Jak použít {entry.name}</h2><p>{entry.boss.adventureType}</p></div><dl><div><dt>Charakteristická schopnost</dt><dd>{entry.boss.signatureAbility}</dd></div><div><dt>Slabina / výhoda</dt><dd>{entry.boss.weakness}</dd></div><div><dt>Alternativní řešení</dt><dd>{entry.boss.alternativeSolutions}</dd></div><div><dt>Poznámka</dt><dd>{entry.boss.note}</dd></div></dl></section>}
-      <FutureAssetLinks />
     </>
   );
 }
@@ -353,7 +341,6 @@ function EquipmentDetail({ item }: { item: EquipmentItem }) {
       </div>
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Schválené údaje</h2><p>Web zobrazuje pouze pole, která položka skutečně obsahuje.</p></div></div><dl className="definition-table">{Object.entries(item.fields).map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{String(value)}</dd></div>)}</dl></section>
       <div className="notice"><strong>Pravidlo specificity</strong><p>Přesný řádek této položky má přednost před obecným vzorcem pouze v tom, co výslovně uvádí. Vaelor nepřidává další skryté bonusy.</p></div>
-      <FutureAssetLinks />
     </>
   );
 }
@@ -404,7 +391,6 @@ function SpellDetail({ spell }: { spell: Spell }) {
       </div>
       <section className="detail-section"><div className="detail-section__heading"><span>01</span><div><h2>Parametry kouzla</h2><p>Přesný řádek z katalogu 110 kouzel.</p></div></div><dl className="definition-table"><div><dt>Škola</dt><dd>{spell.school}</dd></div><div><dt>Typ</dt><dd>{spell.type}</dd></div><div><dt>Min. Chytrost</dt><dd>{spell.minIntelligence}</dd></div><div><dt>Min. Level</dt><dd>{spell.minLevel}</dd></div><div><dt>Bonus</dt><dd>{spell.bonus}</dd></div><div><dt>Cíl</dt><dd>{spell.target}</dd></div><div><dt>Trvání</dt><dd>{spell.duration}</dd></div><div><dt>Omezení</dt><dd>{spell.limitations}</dd></div><div className="definition-table__wide"><dt>Přesný účinek</dt><dd>{spell.effect}</dd></div></dl></section>
       <div className="notice"><strong>Znát nestačí splnit požadavek</strong><p>Min. CH a Min. Level pouze dovolují kouzlo se naučit. Postava je musí skutečně získat při levelování, od učitele, z knihy, svitku, odměny, nálezu nebo příběhu.</p></div>
-      <FutureAssetLinks />
     </>
   );
 }
